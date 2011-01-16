@@ -7,7 +7,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Output\Output;
 
-class BundleScanCommand extends ScanCommand
+class ProjectScanCommand extends ScanCommand
 {
     protected function configure()
     {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Bundle\GMapBundle\DependencyInjection;
+namespace Bundle\RosettaBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;

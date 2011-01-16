@@ -4,6 +4,7 @@ namespace Bundle\RosettaBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 
 abstract class ScanCommand extends Command
 {
