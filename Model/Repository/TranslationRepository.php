@@ -9,6 +9,12 @@ use Bundle\RosettaBundle\Model\Entity\Domain;
 
 class MessageRepository extends Repository
 {
+    public function getOrCreate(Message $message, Language $language, $text)
+    {
+        $message = $this->findOneBy(array('message' => $message, 'language' => $language, 'hash' => Message::hash($text)));
+        return $message ? $message : new Translation($message, $language, $text);
+    }
+
     public function getAll($message=null, $language=null)
     {
         return $this

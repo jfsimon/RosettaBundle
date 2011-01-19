@@ -30,6 +30,9 @@ class Translation extends Entity
     /** @orm:Column(type="text") */
     protected $text;
 
+    /** @orm:Column(type="string", length=28) */
+    protected $hash;
+
     /** @orm:Column(type="integer") */
     protected $rating;
 
@@ -106,6 +109,7 @@ class Translation extends Entity
 	public function setText($text)
     {
         $this->text = (string)$text;
+        $this->hash = self::hash($this->text);
     }
 
 	public function setRating($rating)
@@ -121,5 +125,10 @@ class Translation extends Entity
 	public function setIsAutomatic($isAutomatic)
     {
         $this->isAutomatic = (bool)$isAutomatic;
+    }
+
+    public static function hash($text)
+    {
+        return sha1($text);
     }
 }

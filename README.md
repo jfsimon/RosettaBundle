@@ -6,13 +6,13 @@ A Symfony2 that ease translation process
 
 
 RosettaBundle is inspired by the great eponymous Django app : [Rosetta](http://code.google.com/p/django-rosetta/).
-It consists in:
+The main features :
 
--  Scaning project source files to retrieve messages to translate
--  Live rensering translation (if your strings are setted in $variables or database)
--  Helping translation with use of the [Google AJAX Language API](http://code.google.com/apis/ajaxlanguage/)
+-  Scan your project source files to retrieve messages to translate
+-  Auto-translate messages with [Google AJAX Language API](http://code.google.com/apis/ajaxlanguage/)
+-  Live scan/auto-translation (if your strings are setted in variables or database)
 -  Import existing translations files in the Rosetta system
--  Offering an admin application to manage translations
+-  And at last but not least offers an admin interface for manual translation
 
 
 Install & setup the bundle
@@ -83,28 +83,7 @@ Available settings
 ------------------
 
 
--  `rosetta.config`:   global configuration available in commands:
-
-   -  `store`:         store scanned messages in database
-   -  `translate`:     auto stranslate scanned messages via [Google AJAX Language API](http://code.google.com/apis/ajaxlanguage/)
-   -  `choose`:        choose auto-translated message
-   -  `deploy`:        deploy choosen strings to your application
-   
--  `rosetta.scanners`: scanners classes
-
-   -  `<extension>`:   class scaning given extension
-   
--  `rosetta.live`:     enable live system and configure how it works:
-
-   -  `enabled`:       set to false disble service
-   -  `store`:         store rendered messages in database
-   -  `translate`:     auto stranslate rendered messages via [Google AJAX Language API](http://code.google.com/apis/ajaxlanguage/)
-   -  `choose`:        choose auto-translated message
-   -  `deploy`:        deploy choosen strings to your application
-   
--  `rosetta.admin`:    admin configuration
-
-   -  **will come last but not least**
+**Will come later**
 
 
 Available commands
