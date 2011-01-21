@@ -24,7 +24,7 @@
                 <parameter key="version">2</parameter>
 				<parameter key="key"></parameter>
             </parameter>
-			<parameter key="rosetta.live" type="collection">
+			<parameter key="live" type="collection">
 	            <parameter key="enabled">false</parameter>
 	            <parameter key="translate">true</parameter>
 	            <parameter key="choose">true</parameter>
