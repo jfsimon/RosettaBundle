@@ -47,17 +47,18 @@ Install & setup the bundle
     An exemple in Yaml format:
     
         rosetta.config:
-            store:     true
-            translate: true
-            
-        rosetta.scanners:
-            php:  Bundle\RosettaBundle\Scanner\PhpScanner
-            twig: Bundle\RosettaBundle\Scanner\TwigScanner
-            
-        rosetta.live:
-            store:     true
-            translate: true
-            choose:    true
+            locale:        ~     # current locale
+            scanners:
+                *.php:     Bundle\RosettaBundle\Scanner\PhpScanner
+                *.twig:    Bundle\RosettaBundle\Scanner\TwigScanner
+            translator: 
+                adapter:   Bundle\RosettaBundle\Translator\GoogleAdapter
+                key:       MY_GOOLGLE_TRANSLATE_KEY
+                version:   2
+            live:
+                enabled:   true  # store scanned messages
+                translate: true  # translate scanned messages
+                choose:    true  # choose best/translated message
 
 4.  Make sure Doctrine ORM is enabled and configure it (dont forget DBAL)
 
