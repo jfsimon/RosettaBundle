@@ -31,11 +31,14 @@ Install & setup the bundle
 
 2.  Add the bundle to your `AppKernel` class
 
-        \\ app/AppKernerl.php
+        // app/AppKernerl.php
         public function registerBundles()
         {
-            // ...
-            new Bundle\RosettaBundle\RosettaBundle()
+            $bundles = array(
+                // ...
+                new Bundle\RosettaBundle\RosettaBundle(),
+                // ...
+            );
             // ...
         }
 
@@ -60,9 +63,18 @@ Install & setup the bundle
 
     An exemple in Yaml format:
     
+        doctrine.dbal:
+            dbname:   symfony2
+            user:     root
+            password: ~
+    
         doctrine.orm:
-            rosetta:
-                path:
+            mappings:
+                rosetta:
+                    type:   annotation
+                    dir:    %kernel.root_dir%/../src/Bundle/RosettaBundle/Model/Entity
+                    prefix: Bundle\RosettaBundle\Model\Entity
+                    alias:  Rosetta
                 
 5.  Enable admin routing
 
@@ -70,7 +82,7 @@ Install & setup the bundle
     
         rosetta.admin:
             resource: Bundle/RosettaBundle/Resources/routing/admin.yml
-            prefix:   _rosetta/adlin
+            prefix:   _rosetta/admin
         rosetta.ajax:
             resource: Bundle/RosettaBundle/Resources/routing/ajax.yml
             prefix:   _rosetta/ajax
@@ -83,7 +95,57 @@ Available settings
 ------------------
 
 
-**Will come later**
+Full config example in YAML format:
+
+    rosetta.config:
+        locale:        ~     # current locale
+        scanners:
+            *.php:     Bundle\RosettaBundle\Scanner\PhpScanner
+            *.twig:    Bundle\RosettaBundle\Scanner\TwigScanner
+        translator: 
+            adapter:   Bundle\RosettaBundle\Translator\GoogleAdapter
+            key:       MY_GOOLGLE_TRANSLATE_KEY
+            version:   2
+        live:
+            enabled:   true  # store scanned messages
+            translate: true  # translate scanned messages
+            choose:    true  # choose best/translated message
+
+
+Available methods
+-----------------
+
+
+The `rosetta` service offers various commands to control your translations from your controller
+(or any class aware of the DIC):
+
+    $rosetta = $this->get('roestta');
+    
+    // options
+    $choose = $rosetta->getOption('choose');
+    $rosetta->setOption('choose', true);
+    
+    // translation
+    $translation = $rosetta->translate('What\'s up?', 'fr', 'en');
+    $translations = $rosetta->translate('What\'s up?', array('fr', 'de'), 'en');
+    
+    // source language auto-discovery
+    $translation = $rosetta->translate('What\'s up?', 'fr');
+    
+    // scanning
+    $rosetta->scanFile('/my/template.twig');
+    $rosetta->scanBundle('MyBundle');
+    $rosetta->scanProject();
+    
+    // importing
+    $rosetta->importFile('/my/messages.en.yml');
+    $rosetta->importBundle('MyBundle');
+    $rosetta->importProject();
+    
+    // deployment
+    $rosetta->deployDomain('MyBundle', 'messages');
+    $rosetta->deployBundle('MyBundle');
+    $rosetta->deployProject();
 
 
 Available commands

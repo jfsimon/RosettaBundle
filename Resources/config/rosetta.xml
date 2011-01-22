@@ -69,7 +69,7 @@
 		<service id="rosetta.live" class="%rosetta.live.class%">
             <argument type="service" id="rosetta.translator" />
             <argument type="service" id="rosetta.deployer" />
-            <argument>%rosetta.live.config%</argument>
+            <argument>%rosetta.config%</argument>
         </service>
 		
     </services>
