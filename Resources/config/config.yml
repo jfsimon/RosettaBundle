@@ -1,8 +1,8 @@
 rosetta.config:
     locale:        ~     # current locale
     scanners:
-        *.php:     Bundle\RosettaBundle\Scanner\PhpScanner
-        *.twig:    Bundle\RosettaBundle\Scanner\TwigScanner
+        *.php:     Bundle\RosettaBundle\Service\Scanner\PhpScanner
+        *.twig:    Bundle\RosettaBundle\Service\Scanner\TwigScanner
     translator: 
         adapter:   Bundle\RosettaBundle\Translator\GoogleAdapter
         key:       MY_GOOLGLE_TRANSLATE_KEY

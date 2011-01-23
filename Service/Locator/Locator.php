@@ -1,16 +1,16 @@
 <?php
 
-namespace Bundle\RosettaBundle\Locator;
+namespace Bundle\RosettaBundle\Service\Locator;
 
 class Locator
 {
     protected $kernel;
     protected $bundles;
 
-    public function __construct(AppKerbel $kernel)
+    public function __construct(\AppKernel $kernel)
     {
         $this->kernel = $kernel;
-        $this->bundles = $this->getBundlesClasses();
+        $this->bundles = $this->getBundleClasses();
     }
 
     public function guessPathBundle($path)

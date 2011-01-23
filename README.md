@@ -2,9 +2,6 @@ A Symfony2 that ease translation process
 ========================================
 
 
-**Developpement in progress, come back later for use**
-
-
 RosettaBundle is inspired by the great eponymous Django app : [Rosetta](http://code.google.com/p/django-rosetta/).
 The main features :
 
@@ -13,6 +10,23 @@ The main features :
 -  Live scan/auto-translation (if your strings are setted in variables or database)
 -  Import existing translations files in the Rosetta system
 -  And at last but not least offers an admin interface for manual translation
+
+
+Developpement in progress, come back later for use
+--------------------------------------------------
+
+
+###Currently tested and working
+
+
+-  PHP scanner
+
+
+###Next steps
+
+
+-  Twig scanner
+-  Scanner commands
 
 
 Install & setup the bundle
