@@ -1,13 +1,16 @@
 rosetta.config:
+
     translator:
         locale:       %session.default_locale%
         adapter:      Bundle\RosettaBundle\Service\Translator\GoogleAdapter
         config:
             key:      YOUR_GOOGLE_TRANSLATE_KEY
             version:  2
+            
     locator:          ~
     deployer:         ~
     workflow:         ~
+    
     scanner:
         translate:    true
         choose:       true
@@ -15,10 +18,12 @@ rosetta.config:
         adapters:
             *.php:    Bundle\RosettaBundle\Service\Scanner\PhpScanner
             *.twig:   Bundle\RosettaBundle\Service\Scanner\TwigScanner
+            
     importer:
         translate:    true
         choose:       true
         deploy:       true
+        
     live:
         enabled:      true
         update:       false
