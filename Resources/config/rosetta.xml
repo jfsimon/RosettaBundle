@@ -5,71 +5,108 @@
     xsi:schemaLocation="http://www.symfony-project.org/schema/dic/services http://www.symfony-project.org/schema/dic/services/services-1.0.xsd">
     <parameters>
     	
-		<parameter key="rosetta.class">Bundle\RosettaBundle\Service\Rosetta</parameter>
-		<parameter key="rosetta.locator.class">Bundle\RosettaBundle\Service\Locator\Locator</parameter>
-        <parameter key="rosetta.translator.class">Bundle\RosettaBundle\Service\Translator\Translator</parameter>
-        <parameter key="rosetta.importer.class">Bundle\RosettaBundle\Service\Importer\Importer</parameter>
-        <parameter key="rosetta.deployer.class">Bundle\RosettaBundle\Service\Deployer\Deployer</parameter>
-		<parameter key="rosetta.scanner.class">Bundle\RosettaBundle\Service\Scanner\Scanner</parameter>
-		<parameter key="rosetta.live.class">Bundle\RosettaBundle\Service\Live\Live</parameter>
-		
-		<parameter key="rosetta.config" type="collection">
+		<parameter key="rosetta.translator.class">Bundle\RosettaBundle\Service\Translator\Translator</parameter>
+        <parameter key="rosetta.translator.config" type="collection">
             <parameter key="locale"></parameter>
-			<parameter key="scanners" type="collection">
-	            <parameter key="*.php">Bundle\RosettaBundle\Service\Scanner\PhpScanner</parameter>
-	            <parameter key="*.twig">Bundle\RosettaBundle\Service\Scanner\TwigScanner</parameter>
-	        </parameter>
-			<parameter key="translator" type="collection">
-                <parameter key="adapter">Bundle\RosettaBundle\Service\Translator\GoogleAdapter</parameter>
+            <parameter key="adapter">Bundle\RosettaBundle\Service\Translator\GoogleAdapter</parameter>
+            <parameter key="config" type="collection">
                 <parameter key="version">2</parameter>
-				<parameter key="key"></parameter>
+                <parameter key="key"></parameter>
             </parameter>
-			<parameter key="live" type="collection">
-	            <parameter key="enabled">false</parameter>
-	            <parameter key="translate">true</parameter>
-	            <parameter key="choose">true</parameter>
-	        </parameter>
+        </parameter>
+		
+		<parameter key="rosetta.locator.class">Bundle\RosettaBundle\Service\Locator\Locator</parameter>
+        <parameter key="rosetta.locator.config" type="collection">
+        </parameter>
+		
+		<parameter key="rosetta.deployer.class">Bundle\RosettaBundle\Service\Deployer\Deployer</parameter>
+        <parameter key="rosetta.deployer.config" type="collection">
+        </parameter>
+		
+		<parameter key="rosetta.workflow.class">Bundle\RosettaBundle\Service\Workflow\Workflow</parameter>
+		<parameter key="rosetta.workflow.config" type="collection">
+        </parameter>
+		
+		<parameter key="rosetta.scanner.class">Bundle\RosettaBundle\Service\Scanner\Scanner</parameter>
+        <parameter key="rosetta.scanner.config" type="collection">
+            <parameter key="store">true</parameter>
+            <parameter key="translate">false</parameter>
+            <parameter key="choose">false</parameter>
+            <parameter key="deploy">false</parameter>
+            <parameter key="adapters" type="collection">
+                <parameter key="*.php">Bundle\RosettaBundle\Service\Scanner\PhpScanner</parameter>
+                <parameter key="*.twig">Bundle\RosettaBundle\Service\Scanner\TwigScanner</parameter>
+            </parameter>
+        </parameter>
+    	
+		<parameter key="rosetta.importer.class">Bundle\RosettaBundle\Service\Importer\Importer</parameter>
+        <parameter key="rosetta.importer.config" type="collection">
+            <parameter key="translate">false</parameter>
+            <parameter key="choose">true</parameter>
+            <parameter key="deploy">false</parameter>
+        </parameter>
+        
+        <parameter key="rosetta.live.class">Bundle\RosettaBundle\Service\Live\Live</parameter>
+        <parameter key="rosetta.live.config" type="collection">
+            <parameter key="enabled">false</parameter>
+            <parameter key="update">false</parameter>
+            <parameter key="translate">true</parameter>
+            <parameter key="choose">true</parameter>
+            <parameter key="deploy">false</parameter>
+        </parameter>
+		
+		<parameter key="rosetta.main.class">Bundle\RosettaBundle\Service\Rosetta</parameter>
+		<parameter key="rosetta.main.config" type="collection">
         </parameter>
 		
     </parameters>
     <services>
-    	
-		<service id="rosetta.locator" class="%rosetta.locator.class%">
-            <argument>%kernel.root_dir%</argument>
-        </service>
 		
 		<service id="rosetta.translator" class="%rosetta.translator.class%">
-			<argument>%rosetta.config%</argument>
+			<argument>%rosetta.trasnlator.config%</argument>
         </service>
 		
-		<service id="rosetta.scanner" class="%rosetta.scanner.class%">
-			<argument type="service" id="doctrine.orm.entity_manager" />
-			<argument type="service" id="rosetta.locator" />
-			<argument>%rosetta.config%</argument>
-        </service>
-		
-		<service id="rosetta.importer" class="%rosetta.importer.class%">
-            <argument type="service" id="doctrine.orm.entity_manager" />
-			<argument type="service" id="rosetta.locator" />
+		<service id="rosetta.locator" class="%rosetta.locator.class%">
+            <argument type="service" id="kernel" />
         </service>
 		
 		<service id="rosetta.depoyer" class="%rosetta.deployer.class%">
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="rosetta.locator" />
+            <argument>%rosetta.deployer.config%</argument>
         </service>
 		
-    	<service id="rosetta" class="%rosetta.class%">
+		<service id="rosetta.workflow" class="%rosetta.workflow.class%">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="rosetta.translator" />
+			<argument type="service" id="rosetta.deployer" />
+            <argument>%rosetta.dworkflow.config%</argument>
+        </service>
+		
+		<service id="rosetta.scanner" class="%rosetta.scanner.class%">
+			<argument type="service" id="rosetta.locator" />
+			<argument type="service" id="rosetta.workflow" />
+			<argument>%rosetta.scanner.config%</argument>
+        </service>
+		
+		<service id="rosetta.importer" class="%rosetta.importer.class%">
+			<argument type="service" id="rosetta.locator" />
+			<argument type="service" id="rosetta.workflow" />
+			<argument>%rosetta.importer.config%</argument>
+        </service>
+		
+		<service id="rosetta.live" class="%rosetta.live.class%">
+            <argument type="service" id="rosetta.locator" />
+            <argument type="service" id="rosetta.workflow" />
+            <argument>%rosetta.live.config%</argument>
+        </service>
+		
+    	<service id="rosetta" class="%rosetta.main.class%">
             <argument type="service" id="rosetta.scanner" />
 			<argument type="service" id="rosetta.importer" />
             <argument type="service" id="rosetta.translator" />
             <argument type="service" id="rosetta.deployer" />
-			<argument>%rosetta.config%</argument>
-        </service>
-		
-		<service id="rosetta.live" class="%rosetta.live.class%">
-            <argument type="service" id="rosetta.translator" />
-            <argument type="service" id="rosetta.deployer" />
-            <argument>%rosetta.config%</argument>
+			<argument>%rosetta.main.config%</argument>
         </service>
 		
     </services>

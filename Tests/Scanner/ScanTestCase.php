@@ -5,7 +5,7 @@ namespace Bundle\RosettaBundle\Tests\Scanner;
 use Bundle\RosettaBundle\Tests\RosettaTestCase;
 use Bundle\RosettaBundle\Service\Scanner\PhpScanner;
 
-class ScannerTestCase extends RosettaTestCase
+abstract class ScanTestCase extends RosettaTestCase
 {
     protected function scanFile($file)
     {

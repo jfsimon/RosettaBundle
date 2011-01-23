@@ -1,6 +1,6 @@
 <?php
 
-namespace Bundle\Service\RosettaBundle;
+namespace Bundle\RosettaBundle\Service;
 
 use Bundle\RosettaBundle\Service\Scanner\Scanner;
 use Bundle\RosettaBundle\Service\Importer\Importer;

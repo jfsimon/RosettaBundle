@@ -7,7 +7,7 @@ require_once __DIR__.'/../../../../app/AppKernel.php';
 use AppKernel;
 use Bundle\RosettaBundle\Service\Locator\Locator;
 
-class RosettaTestCase extends \PHPUnit_Framework_TestCase
+abstract class RosettaTestCase extends \PHPUnit_Framework_TestCase
 {
     protected function getTestFile($file)
     {

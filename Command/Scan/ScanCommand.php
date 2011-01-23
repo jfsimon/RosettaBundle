@@ -11,8 +11,10 @@ abstract class ScanCommand extends Command
     protected function configure()
     {
         $this
-            ->addOption('store', 'd', InputOption::VALUE_NONE, 'Store messages in database')
+            ->addOption('fake', 'f', InputOption::VALUE_NONE, 'Fake : do nothing')
             ->addOption('translate', 't', InputOption::VALUE_NONE, 'Translate messages')
+            ->addOption('choose', 'c', InputOption::VALUE_NONE, 'Choose best messages')
+            ->addOption('deploy', 'd', InputOption::VALUE_NONE, 'Deploy messages')
         ;
     }
 
@@ -22,6 +24,8 @@ abstract class ScanCommand extends Command
 
         $rosetta->setOption('store', $input->hasParameterOption('store'));
         $rosetta->setOption('translate', $input->hasParameterOption('translate'));
+        $rosetta->setOption('choose', $input->hasParameterOption('choose'));
+        $rosetta->setOption('deploy', $input->hasParameterOption('deploy'));
 
         return $rosetta;
     }

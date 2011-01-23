@@ -16,19 +16,14 @@ class RosettaExtension extends Extension
             $loader->load('rosetta.xml');
         }
 
-        $parameters = $container->getParameter('rosetta.config');
+        $services = array('translator', 'locator', 'deployer', 'workflow', 'scanner', 'importer', 'live', 'main');
 
-        foreach($parameters as $key => $value) {
-            if(isset($config[$key])) {
-                if(is_array($value)) {
-                    $parameters[$key] = array_merge($value, $config[$key]);
-                } else {
-                    $parameters[$key] = $config[$key];
-                }
-            }
+        foreach($services as $service) {
+            if(isset($config[$service])) {
+                $key = 'rosetta.'.$service.'.config';
+                $container->setParameter($key, $this->mergeConfig($container->getParameter($key), $config[$service]));
+            };
         }
-
-        $container->setParameter('rosetta.config', $parameters);
     }
 
     public function getXsdValidationBasePath()
@@ -44,5 +39,21 @@ class RosettaExtension extends Extension
     public function getAlias()
     {
         return 'rosetta';
+    }
+
+    protected function mergeConfig(array $parameters, array $config)
+    {
+        foreach($parameters as $key => $value) {
+            if(isset($config[$key])) {
+
+                if(is_array($value) && is_array($config[$key])) {
+                    $config[$key] = $this->mergeConfig($value, $config[$key]);
+                }
+
+                $parameters[$key] = $config[$key];
+            }
+        }
+
+        return $parameters;
     }
 }

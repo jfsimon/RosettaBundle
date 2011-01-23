@@ -2,7 +2,7 @@
 
 namespace Bundle\RosettaBundle\Tests\Scanner;
 
-class PhpTemplateTest extends ScannerTestCase
+class PhpTemplateTest extends ScanTestCase
 {
     public function testTrans()
     {

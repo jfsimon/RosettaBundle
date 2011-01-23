@@ -25,8 +25,8 @@ Developpement in progress, come back later for use
 ###Next steps
 
 
--  Twig scanner
 -  Scanner commands
+-  Twig scanner
 
 
 Install & setup the bundle
@@ -58,21 +58,9 @@ Install & setup the bundle
 
 3.  Setup the bundle in your config file
     
-    An exemple in Yaml format:
+    The minimalist example for your `app/config.yml`:
     
-        rosetta.config:
-            locale:        ~     # current locale
-            scanners:
-                *.php:     Bundle\RosettaBundle\Scanner\PhpScanner
-                *.twig:    Bundle\RosettaBundle\Scanner\TwigScanner
-            translator: 
-                adapter:   Bundle\RosettaBundle\Translator\GoogleAdapter
-                key:       MY_GOOLGLE_TRANSLATE_KEY
-                version:   2
-            live:
-                enabled:   true  # store scanned messages
-                translate: true  # translate scanned messages
-                choose:    true  # choose best/translated message
+        rosetta.config: ~
 
 4.  Make sure Doctrine ORM is enabled and configure it (dont forget DBAL)
 
@@ -113,18 +101,32 @@ Available settings
 Full config example in YAML format:
 
     rosetta.config:
-        locale:        ~     # current locale
-        scanners:
-            *.php:     Bundle\RosettaBundle\Scanner\PhpScanner
-            *.twig:    Bundle\RosettaBundle\Scanner\TwigScanner
-        translator: 
-            adapter:   Bundle\RosettaBundle\Translator\GoogleAdapter
-            key:       MY_GOOLGLE_TRANSLATE_KEY
-            version:   2
+        translator:
+            locale:       %session.default_locale%
+            adapter:      Bundle\RosettaBundle\Service\Translator\GoogleAdapter
+            config:
+                key:      YOUR_GOOGLE_TRANSLATE_KEY
+                version:  2
+        locator:          ~
+        deployer:         ~
+        workflow:         ~
+        scanner:
+            translate:    true
+            choose:       true
+            deploy:       true
+            adapters:
+                *.php:    Bundle\RosettaBundle\Service\Scanner\PhpScanner
+                *.twig:   Bundle\RosettaBundle\Service\Scanner\TwigScanner
+        importer:
+            translate:    true
+            choose:       true
+            deploy:       true
         live:
-            enabled:   true  # store scanned messages
-            translate: true  # translate scanned messages
-            choose:    true  # choose best/translated message
+            enabled:      true
+            update:       false
+            translate:    true
+            choose:       true
+            deploy:       false
 
 
 Available methods
