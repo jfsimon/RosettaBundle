@@ -61,7 +61,7 @@ class Workflow
 
         $this->locales = $this->repositories['language']->getCodes();
 
-        foreach($this->launchTasks($tasks) as $message) {
+        foreach($this->launch($tasks) as $message) {
             $this->em->persist($message);
         }
 
@@ -69,7 +69,7 @@ class Workflow
         $this->messages = array();
     }
 
-    protected function launchTasks(array $tasks)
+    protected function launch(array $tasks)
     {
         $messages = $this->messages;
 
@@ -77,26 +77,22 @@ class Workflow
             foreach($messages as $index => $message) {
                 $messages[$index] = $this->translateMessage($message);
             }
-        } else {
-            return $messages;
         }
 
         if($tasks['choose']) {
             foreach($messages as $index => $message) {
                 $messages[$index] = $this->chooseMessage($message);
             }
-        } else {
-            return $messages;
         }
 
         if($tasks['deploy']) {
-            return $this->deployMessages($messages);
+            $this->deployMessages($messages);
         }
 
         return $messages;
     }
 
-    protected function translateMessage(Message $message)
+    protected function translate(Message $message)
     {
         $translations = $this->translator->translate($message->getText(), $this->locales);
 
@@ -108,7 +104,7 @@ class Workflow
         return $message;
     }
 
-    protected function chooseMessage(Message $message)
+    protected function choose(Message $message)
     {
         foreach($this->locales as $locale) {
             if(! $his->repositories['translation']->getChoosen($message, $locale)) {
@@ -123,7 +119,7 @@ class Workflow
         return $message;
     }
 
-    protected function deployMessages(array $messages)
+    protected function deploy(array $messages)
     {
         $bundles = array();
 

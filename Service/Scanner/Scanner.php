@@ -12,26 +12,39 @@ use Symfony\Component\Finder\Finder;
 class Scanner
 {
     protected $locator;
-    protected $scanners;
+    protected $adapters;
+    protected $config;
 
-    public function __construct(Locator $locator, array $config)
+    public function __construct(Locator $locator, Workflow $workflow, array $config)
     {
         $this->locator = $locator;
-        $this->scanners = $config['scanners'];
+        $this->workflow = $workflow;
+        $this->adapters = $config['adapters'];
+        unset($config['adapters']);
+        $this->config = $config;
     }
 
-    public function setCanner($extension, $class)
+    public function getAdapters()
     {
-        $this->scanners[$extension] = $class;
+        return $this->adapters;
     }
 
-    public function getScanner($extension)
+	public function getConfig()
     {
-        $class = $this->scanners[$extension];
-        return new $class();
+        return $this->config;
     }
 
-    public function scanFile($file, $bundle=null, $store=false)
+	public function setAdapters(array $adapters)
+    {
+        $this->adapters = $adapters;
+    }
+
+	public function setConfig(array $config)
+    {
+        $this->config = $config;
+    }
+
+	public function scanFile($file, $bundle=null, $workflow=true)
     {
         if(is_null($bundle)) {
             $bundle = $this->locator->guessBundle($file);
@@ -39,7 +52,7 @@ class Scanner
 
         $extension = substr($file, strrpos($file, '.') + 1);
 
-        if(! isset($this->scanners[$extension])) {
+        if(! isset($this->adapter[$extension])) {
             return false;
         }
 
@@ -48,47 +61,58 @@ class Scanner
 
         $messages = $scanner->getMessages();
 
-        return $this->getWorkflowInputs($messages, $bundle);
+        if($workflow) {
+            $this->processWorkflow($messages, $bundle);
+        }
+
+        return $messages;
     }
 
-    public function scanBundle($bundle)
+    public function scanBundle($bundle, $workflow=true)
     {
         $path = $this->locator->locateBundle($bundle);
-        $inputs = array();
+        $messages = array();
 
         foreach($this->locator->findFiles($path, array_keys($this->scanners)) as $file) {
-            $inputs = array_merge($inputs, $this->scanFile($file, $bundle));
+            $messages = array_merge($messages, $this->scanFile($file, $bundle));
         }
 
-        return $inputs;
+        if($workflow) {
+            $this->processWorkflow($messages, $bundle);
+        }
+
+
+        return $messages;
     }
 
-    public function scanProject(array $config=array())
+    public function scanProject($workflow = true)
     {
-        $inputs = array();
+        $messages = array();
 
         foreach($this->locator->getBundles() as $bundle) {
-            $inputs = array_merge($inputs, $this->scanBundle($bundle));
+            $messages = array_merge($messages, $this->scanBundle($bundle));
         }
 
-        return $inputs;
+        if($workflow) {
+            $this->processWorkflow($messages, $bundle);
+        }
+
+        return $messages;
     }
 
-    protected function getWorkflowInputs(array $messages, $bundle)
+    protected function processWorkflow(array $messages, $bundle)
     {
-        $inputs = array();
-
         foreach($messages as $message) {
-            $inputs[] = new Input(
+            $this->workflow->handle(new Input(
                 $message['text'],
                 $message['parameters'],
                 $message['domain'],
                 $bundle,
                 $message['choice'],
                 false
-            );
+            ));
         }
 
-        return $inputs;
+        $this->workflow->pocess($this->config);
     }
 }
