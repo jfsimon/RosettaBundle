@@ -25,6 +25,9 @@
 		
 		<parameter key="rosetta.workflow.class">Bundle\RosettaBundle\Service\Workflow\Workflow</parameter>
 		<parameter key="rosetta.workflow.config" type="collection">
+			<parameter key="translate">Bundle\RosettaBundle\Service\Workflow\TranslateTask</parameter>
+            <parameter key="choose">Bundle\RosettaBundle\Service\Workflow\ChooseTask</parameter>
+            <parameter key="deploy">Bundle\RosettaBundle\Service\Workflow\DeployTask</parameter>
         </parameter>
 		
 		<parameter key="rosetta.scanner.class">Bundle\RosettaBundle\Service\Scanner\Scanner</parameter>
@@ -49,6 +52,7 @@
         <parameter key="rosetta.live.class">Bundle\RosettaBundle\Service\Live\Live</parameter>
         <parameter key="rosetta.live.config" type="collection">
             <parameter key="enabled">false</parameter>
+			<parameter key="translator">Bundle\RosettaBundle\Service\Live\Translator</parameter>
             <parameter key="update">false</parameter>
             <parameter key="translate">true</parameter>
             <parameter key="choose">true</parameter>

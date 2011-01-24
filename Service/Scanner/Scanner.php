@@ -2,18 +2,14 @@
 
 namespace Bundle\RosettaBundle\Service\Scanner;
 
-use Bundle\RosettaBundle\Service\Model\Model;
 use Bundle\RosettaBundle\Service\Locator\Locator;
-use Bundle\RosettaBundle\Service\Translator\Translator;
 use Bundle\RosettaBundle\Service\Workflow\Input;
-use Doctrine\ORM\EntityManager;
-use Symfony\Component\Finder\Finder;
 
 class Scanner
 {
     protected $locator;
     protected $adapters;
-    protected $config;
+    protected $tasks;
 
     public function __construct(Locator $locator, Workflow $workflow, array $config)
     {
@@ -21,7 +17,7 @@ class Scanner
         $this->workflow = $workflow;
         $this->adapters = $config['adapters'];
         unset($config['adapters']);
-        $this->config = $config;
+        $this->tasks = $config;
     }
 
     public function getAdapters()
@@ -29,9 +25,9 @@ class Scanner
         return $this->adapters;
     }
 
-	public function getConfig()
+	public function getTasks()
     {
-        return $this->config;
+        return $this->tasks;
     }
 
 	public function setAdapters(array $adapters)
@@ -39,9 +35,9 @@ class Scanner
         $this->adapters = $adapters;
     }
 
-	public function setConfig(array $config)
+	public function setTasks(array $tasks)
     {
-        $this->config = $config;
+        $this->tasks = $tasks;
     }
 
 	public function scanFile($file, $bundle=null, $workflow=true)
@@ -113,6 +109,6 @@ class Scanner
             ));
         }
 
-        $this->workflow->pocess($this->config);
+        $this->workflow->pocess($this->tasks);
     }
 }

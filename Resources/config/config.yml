@@ -9,7 +9,10 @@ rosetta.config:
             
     locator:          ~
     deployer:         ~
-    workflow:         ~
+    workflow:
+        translate:    Bundle\RosettaBundle\Service\Workflow\TranslateTask
+        choose:       Bundle\RosettaBundle\Service\Workflow\ChooseTask
+        deploy:       Bundle\RosettaBundle\Service\Workflow\DeployTask
     
     scanner:
         translate:    true
@@ -26,7 +29,7 @@ rosetta.config:
         
     live:
         enabled:      true
-        update:       false
+        translator:   Bundle\RosettaBundle\Service\Live\Translator
         translate:    true
         choose:       true
         deploy:       false

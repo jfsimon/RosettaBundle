@@ -98,7 +98,7 @@ Available settings
 ------------------
 
 
-Full config example in YAML format:
+Full config example in YAML format (these are the default values):
 
     rosetta.config:
         translator:
@@ -109,7 +109,10 @@ Full config example in YAML format:
                 version:  2
         locator:          ~
         deployer:         ~
-        workflow:         ~
+        workflow:
+            translate:    Bundle\RosettaBundle\Service\Workflow\TranslateTask
+            choose:       Bundle\RosettaBundle\Service\Workflow\ChooseTask
+            deploy:       Bundle\RosettaBundle\Service\Workflow\DeployTask
         scanner:
             translate:    true
             choose:       true

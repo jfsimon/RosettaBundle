@@ -15,7 +15,8 @@ class Live
     {
         $this->locator = $locator;
         $this->workflow = $workflow;
-        $this->tasks = $config['live'];
+        unset($config['enabled'], $config['translator']);
+        $this->tasks = $config;
     }
 
     public function handle($text, array $parameters, $domain, $locale, $isChoice, array $backtrace)
@@ -23,7 +24,8 @@ class Live
         $bundle = $this->guessBundleFromBacktrace($backtrace);
         $input = new Input($text, $parameters, $domain, $bundle, $isChoice, true);
 
-        $this->workflow->handle($input, $this->tasks);
+        $this->workflow->handle($input);
+        $this->workflow->process($this->tasks);
     }
 
     protected function guessBundleFromBacktrace(array $backtrace)

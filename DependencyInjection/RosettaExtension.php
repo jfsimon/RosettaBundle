@@ -24,6 +24,12 @@ class RosettaExtension extends Extension
                 $container->setParameter($key, $this->mergeConfig($container->getParameter($key), $config[$service]));
             };
         }
+
+        $live = $container->getParameter('rosetta.live.config');
+
+        if($live['enabled']) {
+            $container->setParameter('translator.class', $live['translator']);
+        }
     }
 
     public function getXsdValidationBasePath()

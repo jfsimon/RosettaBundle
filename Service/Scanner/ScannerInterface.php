@@ -4,6 +4,7 @@ namespace Bundle\RosettaBundle\Service\Scanner;
 
 interface ScannerInterface
 {
-    public function loadFile($file);
+    public function scanFile($file);
+    public function scan($content);
     public function getMessages();
 }

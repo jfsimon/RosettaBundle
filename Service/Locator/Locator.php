@@ -13,7 +13,7 @@ class Locator
         $this->bundles = $this->getBundleClasses();
     }
 
-    public function guessPathBundle($path)
+    public function guessBundleFromPath($path)
     {
         foreach($this->kernel->getBundleNames() as $root => $dir) {
             if(substr($path, strlen($root)) === $root) {
@@ -30,7 +30,7 @@ class Locator
         return null;
     }
 
-    public function guessClassBundle($class)
+    public function guessBundleFromClass($class)
     {
         if(is_object($class)) {
             $class = get_class($class);

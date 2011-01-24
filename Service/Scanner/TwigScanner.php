@@ -2,10 +2,12 @@
 
 namespace Bundle\RosettaBundle\Service\Scanner;
 
-class TwigScanner extends BaseScanner implements ScannerInterface,  \IteratorAggregate
+class TwigScanner extends BaseScanner implements ScannerInterface
 {
-    public function loadFile($file)
+    protected function parseMessages($content)
     {
+        $messages = array();
 
+        return $messages;
     }
 }
