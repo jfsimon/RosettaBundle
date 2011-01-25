@@ -7,7 +7,7 @@ The main features :
 
 -  Scan your project source files to retrieve messages to translate
 -  Auto-translate messages with [Google AJAX Language API](http://code.google.com/apis/ajaxlanguage/)
--  Live scan/auto-translation (if your strings are setted in variables or database)
+-  Live scan/auto-translation (if your strings are unscanable: variables or database)
 -  Import existing translations files in the Rosetta system
 -  And at last but not least offers an admin interface for manual translation
 
