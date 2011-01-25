@@ -15,17 +15,23 @@ class Locator
 
     public function guessBundleFromPath($path)
     {
-        foreach($this->kernel->getBundleNames() as $root => $dir) {
-            if(substr($path, strlen($root)) === $root) {
-                foreach($this->getBundleNames($root) as $bundle) {
-                    $check = $root.'/'.$bundle;
+        $path = realpath($path);
 
-                    if(substr($path, strlen($check)) === $check) {
+        foreach($this->kernel->getBundleDirs() as $root => $dir) {
+            $dir = realpath($dir);
+            if(substr($path, 0, strlen($dir)) === $dir) {
+
+                foreach($this->getBundleNames($root) as $bundle) {
+                    $check = $dir.'/'.$bundle;
+
+                    if(substr($path, 0, strlen($check)) === $check) {
                         return $bundle;
                     }
                 }
             }
         }
+
+        die();
 
         return null;
     }
@@ -40,7 +46,7 @@ class Locator
             foreach($this->getBundleNames($root) as $bundle) {
                 $check = $root.'\\'.$bundle;
 
-                if(substr($class, strlen($check)) === $check) {
+                if(substr($class, 0, strlen($check)) === $check) {
                     return $bundle;
                 }
             }
@@ -49,11 +55,11 @@ class Locator
 
     public function locateBundle($bundle)
     {
-        $bundleName = substr($bundle, strrpos('\\', $bundle) + 1);
+        $bundleName = substr($bundle, strrpos($bundle, '\\') + 1);
 
         foreach($this->kernel->getBundleDirs() as $root => $dir) {
-            if(substr($bundle, strlen($root)) === $root) {
-                return $dir.'/'.$bundleName;
+            if(substr($bundle, 0, strlen($root)) === $root) {
+                return realpath($dir.'/'.$bundleName);
             }
         }
 
@@ -77,8 +83,8 @@ class Locator
         $bundles = array();
 
         foreach($this->bundles as $bundle) {
-            if(substr($bundle, strlen($root)) === $root) {
-                $bundles[] = substr($bundle, strrpos('\\', $bundle) + 1);
+            if(substr($bundle, 0, strlen($root)) === $root) {
+                $bundles[] = substr($bundle, strrpos($bundle, '\\') + 1);
             }
         }
 

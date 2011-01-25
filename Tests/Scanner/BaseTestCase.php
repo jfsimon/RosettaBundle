@@ -2,11 +2,13 @@
 
 namespace Bundle\RosettaBundle\Tests\Scanner;
 
-class PhpTemplateTest extends ScanTestCase
+use Bundle\RosettaBundle\Tests\RosettaTestCase;
+
+abstract class BaseTestCase extends RosettaTestCase
 {
     public function testTrans()
     {
-        $messages = $this->scanFile('trans_template.php');
+        $messages = $this->scanFile('trans_template');
         $this->transMessagesAssertions($messages);
 
         for($i = 0; $i < 6; $i++) {
@@ -16,7 +18,7 @@ class PhpTemplateTest extends ScanTestCase
 
     public function testTransChoice()
     {
-        $messages = $this->scanFile('trans_choice_template.php');
+        $messages = $this->scanFile('trans_choice_template');
         $this->transMessagesAssertions($messages);
 
         for($i = 0; $i < 6; $i++) {
@@ -26,7 +28,7 @@ class PhpTemplateTest extends ScanTestCase
 
     public function testUglyTrans()
     {
-        $messages = $this->scanFile('ugly_trans_template.php');
+        $messages = $this->scanFile('ugly_trans_template');
 
         for($i = 0; $i < 6; $i++) {
             $this->assertEquals('{{ what }} {{ who }}!', $messages[$i]['text']);
@@ -42,6 +44,8 @@ class PhpTemplateTest extends ScanTestCase
             $this->assertTrue($messages[$i]['choice']);
         }
     }
+
+    abstract protected function scanFile($file);
 
     protected function transMessagesAssertions(array $messages)
     {

@@ -146,11 +146,8 @@ The `rosetta` service offers various commands to control your translations from 
     $rosetta->setOption('choose', true);
     
     // translation
-    $translation = $rosetta->translate('What\'s up?', 'fr', 'en');
-    $translations = $rosetta->translate('What\'s up?', array('fr', 'de'), 'en');
-    
-    // source language auto-discovery
     $translation = $rosetta->translate('What\'s up?', 'fr');
+    $translations = $rosetta->translate('What\'s up?', array('fr', 'de'));
     
     // scanning
     $rosetta->scanFile('/my/template.twig');
