@@ -2,7 +2,7 @@ A Symfony2 that ease translation process
 ========================================
 
 
-RosettaBundle is inspired by the great eponymous Django app : [Rosetta](http://code.google.com/p/django-rosetta/).
+RosettaBundle is inspired by the great Django app : [Rosetta](http://code.google.com/p/django-rosetta/).
 The main features :
 
 -  Scan your project source files to retrieve messages to translate
