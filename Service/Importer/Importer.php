@@ -7,11 +7,14 @@ use Bundle\RosettaBundle\Service\Locator\Locator;
 
 class Importer
 {
+    protected $locator;
+    protected $workflow;
+    protected $config;
+
     public function __construct(Locator $locator, Workflow $workflow, array $config)
     {
         $this->locator = $locator;
         $this->workflow = $workflow;
-
         $this->config = $config;
     }
 

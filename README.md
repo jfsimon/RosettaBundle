@@ -40,7 +40,7 @@ Install & setup the bundle
 
     Using Git to constrol your project from project root directory:
     
-        git dubmodule add git://github.com/jfsimon/RosettaBundle.git
+        git dubmodule add git://github.com/jfsimon/RosettaBundle.git src/Bundle/RosettaBundle
         
     Just clonind repository (in `src/Bundle`):
     
@@ -107,9 +107,8 @@ Full config example in YAML format (these are the default values):
         translator:
             locale:       %session.default_locale%
             adapter:      Bundle\RosettaBundle\Service\Translator\GoogleAdapter
-            config:
-                key:      YOUR_GOOGLE_TRANSLATE_KEY
-                version:  2
+            key:          YOUR_GOOGLE_TRANSLATE_KEY
+            version:      1 # or 2 for beta varsion
         locator:          ~
         deployer:         ~
         workflow:
@@ -186,7 +185,10 @@ Available commands
    
 -  `rosetta:translate`: auto translate untranslated strings from database
 
-   -  `string`:         translate given string using [Google AJAX Language API](http://code.google.com/apis/ajaxlanguage/)
+   -  `:string`:        translate given string using [Google AJAX Language API](http://code.google.com/apis/ajaxlanguage/)
+   -  `:domain`:        translate untranslated strings from a domain (within a bundle)
+   -  `:bundle`:        translate untranslated strings from a bundle
+   -  `:project`:       translate untranslated strings from whole project
    
 -  `rosetta:deploy`:    deploy translations to Symfony translation files in given format
 
