@@ -3,12 +3,15 @@ rosetta.config:
     translator:
         locale:       %session.default_locale%
         adapter:      Bundle\RosettaBundle\Service\Translator\GoogleAdapter
-        config:
-            key:      YOUR_GOOGLE_TRANSLATE_KEY
-            version:  2
+        key:          YOUR_GOOGLE_TRANSLATE_KEY
+        version:      1
             
-    locator:          ~
-    deployer:         ~
+    locator:
+        ignore:       [Symfony\Bundle]
+        
+    deployer:
+        override:     true
+    
     workflow:
         translate:    Bundle\RosettaBundle\Service\Workflow\TranslateTask
         choose:       Bundle\RosettaBundle\Service\Workflow\ChooseTask

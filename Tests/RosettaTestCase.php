@@ -19,7 +19,7 @@ abstract class RosettaTestCase extends \PHPUnit_Framework_TestCase
         $kernel = new AppKernel('test', false);
         $kernel->boot();
 
-        $locator = new Locator($kernel);
+        $locator = new Locator($kernel,array('ignore' => array('Symfony\\Bundle')));
 
         return $locator;
     }

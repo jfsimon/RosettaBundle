@@ -14,4 +14,19 @@ class Importer
 
         $this->config = $config;
     }
+
+    public function importFile($file)
+    {
+
+    }
+
+    public function importBundle($bundle)
+    {
+
+    }
+
+    public function importProject()
+    {
+
+    }
 }

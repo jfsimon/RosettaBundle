@@ -37,10 +37,8 @@ class GoogleTestCase extends BaseTestCase
         $config = array(
             'locale' => 'en',
             'adapter' => 'Bundle\RosettaBundle\Service\Translator\GoogleAdapter',
-            'config' => array(
-                'version' => $version,
-                'key' => null
-            )
+            'version' => $version,
+            'key' => null
         );
 
         $translator = new Translator($config);

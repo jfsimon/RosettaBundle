@@ -9,14 +9,15 @@
         <parameter key="rosetta.translator.config" type="collection">
             <parameter key="locale"></parameter>
             <parameter key="adapter">Bundle\RosettaBundle\Service\Translator\GoogleAdapter</parameter>
-            <parameter key="config" type="collection">
-                <parameter key="version">2</parameter>
-                <parameter key="key"></parameter>
-            </parameter>
+            <parameter key="version">1</parameter>
+            <parameter key="key"></parameter>
         </parameter>
 		
 		<parameter key="rosetta.locator.class">Bundle\RosettaBundle\Service\Locator\Locator</parameter>
         <parameter key="rosetta.locator.config" type="collection">
+        	<parameter key="ignore" type="collection">
+        		<parameter>Bundle\Symfony</parameter>
+        	</parameter>
         </parameter>
 		
 		<parameter key="rosetta.deployer.class">Bundle\RosettaBundle\Service\Deployer\Deployer</parameter>
@@ -72,6 +73,7 @@
 		
 		<service id="rosetta.locator" class="%rosetta.locator.class%">
             <argument type="service" id="kernel" />
+			<argument>%rosetta.locator.config%</argument>
         </service>
 		
 		<service id="rosetta.depoyer" class="%rosetta.deployer.class%">

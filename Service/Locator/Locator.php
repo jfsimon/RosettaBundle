@@ -6,11 +6,14 @@ class Locator
 {
     protected $kernel;
     protected $bundles;
+    protected $ignore;
 
-    public function __construct(\AppKernel $kernel)
+    public function __construct(\AppKernel $kernel, array $config)
     {
         $this->kernel = $kernel;
+        $this->config = $config;
         $this->bundles = $this->getBundleClasses();
+        $this->ignore = is_array($config['ignore']) ? $config['ignore'] : array($config['ignore']);
     }
 
     public function guessBundleFromPath($path)
@@ -19,7 +22,7 @@ class Locator
 
         foreach($this->kernel->getBundleDirs() as $root => $dir) {
             $dir = realpath($dir);
-            if(substr($path, 0, strlen($dir)) === $dir) {
+            if($this->startsWith($path, $dir)) {
 
                 foreach($this->getBundleNames($root) as $bundle) {
                     $check = $dir.'/'.$bundle;
@@ -30,8 +33,6 @@ class Locator
                 }
             }
         }
-
-        die();
 
         return null;
     }
@@ -46,7 +47,7 @@ class Locator
             foreach($this->getBundleNames($root) as $bundle) {
                 $check = $root.'\\'.$bundle;
 
-                if(substr($class, 0, strlen($check)) === $check) {
+                if($this->startsWith($class, $check)) {
                     return $bundle;
                 }
             }
@@ -58,7 +59,7 @@ class Locator
         $bundleName = substr($bundle, strrpos($bundle, '\\') + 1);
 
         foreach($this->kernel->getBundleDirs() as $root => $dir) {
-            if(substr($bundle, 0, strlen($root)) === $root) {
+            if($this->startsWith($bundle, $root)) {
                 return realpath($dir.'/'.$bundleName);
             }
         }
@@ -100,5 +101,15 @@ class Locator
         }
 
         return $classes;
+    }
+
+    protected function startsWith($string, $start)
+    {
+        return substr($string, 0, strlen($start)) === $start;
+    }
+
+    protected function endsWith($string, $end)
+    {
+        return substr($string, strlen($string) - strlen($end)) === $end;
     }
 }

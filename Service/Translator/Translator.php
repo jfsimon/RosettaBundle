@@ -12,7 +12,8 @@ class Translator
     {
         $this->locale = $config['locale'];
         $adapter = $config['adapter'];
-        $this->adapter = new $adapter($config['config']);
+        unset($config['locale'], $config['adapter']);
+        $this->adapter = new $adapter($config);
     }
 
     public function translate($string, $locales, $fromLocale=null)
