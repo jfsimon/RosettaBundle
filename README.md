@@ -16,17 +16,20 @@ Developpement in progress, come back later for use
 --------------------------------------------------
 
 
-Currently tested and working
+Currently tested and working:
 
 -  PHP scanner
 -  Locator
 -  Translator
 
-Next steps
+Next steps:
 
 -  Importer
 -  Deployer
 -  Twig scanner (ouch!)
+-  Test services with WebTestCase
+
+As every services will be tested, I will start admin interface developpement.
 
 
 Install & setup the bundle
