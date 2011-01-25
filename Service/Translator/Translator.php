@@ -4,20 +4,31 @@ namespace Bundle\RosettaBundle\Service\Translator;
 
 class Translator
 {
+    protected $locale;
     protected $adapter;
     protected $config;
 
     public function __construct(array $config)
     {
-        $config = $config['translator'];
+        $this->locale = $config['locale'];
         $adapter = $config['adapter'];
-        unset($config['adapter']);
-
-        $this->adapter = new $adapter($config);
+        $this->adapter = new $adapter($config['config']);
     }
 
-    public function translate($string, $locale, $fromLocale=null)
+    public function translate($string, $locales, $fromLocale=null)
     {
-        return $this->adapter->translate($string, $locale, $fromLocale);
+        if(! is_array($locales)) {
+            $locales = array($locales);
+        }
+
+        foreach($locales as $locale) {
+            $translations[$locale] = $this->adapter->translate($string, $fromLocale ?: $this->locale, $locale);
+        }
+
+        if(count($locales) === 1) {
+            return $translations[$locales[0]];
+        }
+
+        return $translations;
     }
 }

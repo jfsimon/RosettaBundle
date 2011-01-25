@@ -12,6 +12,7 @@ class RosettaTestSuite extends \PHPUnit_Framework_TestSuite
         $suite->addTestSuite($namespace.'\\Scanner\\PhpTestCase');
         $suite->addTestSuite($namespace.'\\Locator\\GuessBundleTestCase');
         $suite->addTestSuite($namespace.'\\Locator\\LocateBundleTestCase');
+        $suite->addTestSuite($namespace.'\\Translator\\GoogleTestCase');
 
         return $suite;
     }

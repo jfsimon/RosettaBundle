@@ -16,17 +16,17 @@ Developpement in progress, come back later for use
 --------------------------------------------------
 
 
-###Currently tested and working
-
+Currently tested and working
 
 -  PHP scanner
+-  Locator
+-  Translator
 
+Next steps
 
-###Next steps
-
-
--  Scanner commands
--  Twig scanner
+-  Importer
+-  Deployer
+-  Twig scanner (ouch!)
 
 
 Install & setup the bundle
