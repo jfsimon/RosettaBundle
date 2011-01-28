@@ -10,8 +10,9 @@ class Input
     protected $isChoice;
     protected $parameters;
     protected $isLive;
+    protected $translations;
 
-    public function __construct($text, array $parameters=array(), $domain='default', $bundle=null, $isChoice=false, $isLive=false)
+    public function __construct($text, array $parameters=array(), $domain='default', $bundle=null, $isChoice=false, $isLive=false, array $translations=array())
     {
         $this->setText($text);
         $this->setParameters($parameters);
@@ -19,6 +20,7 @@ class Input
         $this->setBundle($bundle);
         $this->setIsChoice($isChoice);
         $this->setIsLive($isLive);
+        $this->setTranslations($translations);
     }
 
     public function getBundle()
@@ -46,9 +48,19 @@ class Input
         return $this->isLive;
     }
 
-    public function getParameters()
+    public function getTranslations()
+    {
+        return $this->translations;
+    }
+
+	public function getParameters()
     {
         return $this->parameters;
+    }
+
+    public function hasTranslations()
+    {
+        return count($this->translations);
     }
 
     public function hasParameters()
@@ -76,7 +88,17 @@ class Input
         $this->isChoice = (bool)$isChoice;
     }
 
-    public function setParameters(array $parameters)
+    public function setTranslations(array $translations)
+    {
+        $this->translations = $translations;
+    }
+
+    public function addTranslation($locale, $translation)
+    {
+        $this->translations[trim($locale)] = trim($translation);
+    }
+
+	public function setParameters(array $parameters)
     {
         foreach($parameters as $parameter) {
             $this->addParameter($parameter);

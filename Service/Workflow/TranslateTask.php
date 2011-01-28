@@ -3,6 +3,7 @@
 namespace Bundle\RosettaBundle\Service\Workflow;
 
 use Bundle\RosettaBundle\Service\Translator\Translator;
+use Bundle\RosettaBundle\Model\Entity\Translation;
 
 class TranslateTask implements TaskInterface
 {
@@ -30,7 +31,12 @@ class TranslateTask implements TaskInterface
             $translations = $this->translator->translate($message->getText(), array_keys($languages));
 
             foreach($translations as $locale => $translation) {
-                $message->addTranslation($this->languages[$locale], $translation);
+                $entity = new Translation();
+                $entity->setLanguage($this->languages[$locale]);
+                $entity->setText($translation);
+                $entity->setIsAutomatic(true);
+
+                $message->addTranslation($entity);
             }
         }
 

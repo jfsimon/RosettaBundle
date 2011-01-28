@@ -22,6 +22,9 @@ class Deployer
 
     public function deployFile(Domain $domain, Language $language)
     {
+        $messages = $this->em
+            ->getRepository('Bundle\\RosettaBundle\\Model\\Entity\\Message')
+            ->findBy(array('domain' => $domain, 'language' => $language));
 
     }
 

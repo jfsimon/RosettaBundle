@@ -2,18 +2,20 @@
 
 namespace Bundle\RosettaBundle\Service\Locator;
 
+use Symfony\Component\Finder\Finder;
+
 class Locator
 {
     protected $kernel;
-    protected $bundles;
     protected $ignore;
+    protected $bundleClasses;
+    protected $bundlePathes;
 
     public function __construct(\AppKernel $kernel, array $config)
     {
         $this->kernel = $kernel;
-        $this->config = $config;
-        $this->bundles = $this->getBundleClasses();
-        $this->ignore = is_array($config['ignore']) ? $config['ignore'] : array($config['ignore']);
+        $this->ignore = $config['ignore'] ? (is_array($config['ignore']) ? $config['ignore'] : array($config['ignore'])) : array();
+        $this->$bundleClasses = $this->getBundleClasses();
     }
 
     public function guessBundleFromPath($path)
@@ -54,20 +56,47 @@ class Locator
         }
     }
 
-    public function locateBundle($bundle)
+    public function locateBundle($bundleName)
     {
-        $bundleName = substr($bundle, strrpos($bundle, '\\') + 1);
-
-        foreach($this->kernel->getBundleDirs() as $root => $dir) {
-            if($this->startsWith($bundle, $root)) {
-                return realpath($dir.'/'.$bundleName);
-            }
+        if(strpos($bundleName, '\\') !== false) {
+            $bundleName = substr($bundleName, strrpos($bundleName, '\\') + 1);
         }
 
-        return null;
+        if(! isset($this->bundlePathes[$bundleName])) {
+            $reflection = new \ReflectionClass($this->kernel->getBundle($bundleName));
+            $this->bundlePathes[$bundleName] = $reflection->getFileName();
+        }
+
+        return $this->bundlePathes[$bundleName];
     }
 
-    public function findFiles($root, $masks)
+    public function locateTranslationFiles($bundleName)
+    {
+        $dir = $this->locateBundle($bundleName).'/Resources/translations';
+
+        $finder = new Finder();
+        return $finder->files()->in($dir);
+    }
+
+    public function locateTemplates($bundleName)
+    {
+        $dir = $this->locateBundle($bundleName).'/Resources/views';
+
+        $finder = new Finder();
+        return $finder->files()->in($dir);
+    }
+
+    public function locateClasses($bundleName)
+    {
+        $dir = $this->locateBundle($bundleName);
+
+        $finder = new Finder();
+        return $finder
+            ->files()->name('*.php')
+            ->exclude($dir.'/Resources')->in($dir);
+    }
+
+    public function findFiles($dir, array $masks=array())
     {
         $finder = new Finder();
         $finder->files();
@@ -76,20 +105,22 @@ class Locator
             $finder->name($mask);
         }
 
-        return $finder->in($root);
+        return $finder->in($dir);
     }
 
-    protected function getBundleNames($root)
+    public function getBundleNames($namespace=null)
     {
-        $bundles = array();
+        $names = array();
 
-        foreach($this->bundles as $bundle) {
-            if(substr($bundle, 0, strlen($root)) === $root) {
-                $bundles[] = substr($bundle, strrpos($bundle, '\\') + 1);
+        foreach($this->bundleClasses as $className) {
+            if($namespace && ! $this->startsWith($className, $namespace)) {
+                continue;
             }
+
+            $names[] = substr($className, strrpos($className, '\\') + 1);
         }
 
-        return $bundles;
+        return $names;
     }
 
     protected function getBundleClasses()
@@ -97,7 +128,11 @@ class Locator
         $classes = array();
 
         foreach($this->kernel->getBundles() as $bundle) {
-            $classes[] = get_class($bundle);
+            $classname = get_class($bundle);
+
+            if(! $this->ignoreBundle($classname)) {
+                $classes[] = $classname;
+            }
         }
 
         return $classes;
@@ -111,5 +146,16 @@ class Locator
     protected function endsWith($string, $end)
     {
         return substr($string, strlen($string) - strlen($end)) === $end;
+    }
+
+    protected function ignoreBundle($className)
+    {
+        foreach($this->config['ignore'] as $ignore) {
+            if($this->startsWith($className, $ignore)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

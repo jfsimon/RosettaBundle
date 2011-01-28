@@ -30,6 +30,8 @@ class RosettaExtension extends Extension
         if($live['enabled']) {
             $container->setParameter('translator.class', $live['translator']);
         }
+
+        $this->setupTranslationLoaders($container);
     }
 
     public function getXsdValidationBasePath()
@@ -61,5 +63,19 @@ class RosettaExtension extends Extension
         }
 
         return $parameters;
+    }
+
+    protected function setupTranslationLoaders(ContainerBuilder $container)
+    {
+        $loaders = array();
+
+        foreach ($container->findTaggedServiceIds('translation.loader') as $id => $attributes) {
+            $loaders($attributes[0]['alias'], $container->get($id));
+        }
+
+        $importer = $container->getParameter('rosetta.importer.config');
+        $importer['loaders'] = $loaders;
+
+        $container->setParameter('rosetta.importer.config', $importer);
     }
 }

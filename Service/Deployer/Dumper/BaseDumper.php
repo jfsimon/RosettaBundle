@@ -22,7 +22,7 @@ abstract class BaseDumper
             .$domain.'_'.$locale.'.'.$this->extension;
     }
 
-    public function dump($message, $translation)
+    public function dump($messages)
     {
         file_put_contents($this->filename, $this->render());
     }
