@@ -2,7 +2,7 @@
 
 namespace Bundle\RosettaBundle\Service\Scanner;
 
-interface ScannerInterface
+interface AdapterInterface
 {
     public function scanFile($file);
     public function scan($content);

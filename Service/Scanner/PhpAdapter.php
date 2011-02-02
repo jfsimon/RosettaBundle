@@ -2,7 +2,7 @@
 
 namespace Bundle\RosettaBundle\Service\Scanner;
 
-class PhpScanner extends BaseScanner implements ScannerInterface
+class PhpAdapter extends Adapter implements AdapterInterface
 {
     protected function parseMessages($content)
     {

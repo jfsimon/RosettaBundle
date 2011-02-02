@@ -2,7 +2,7 @@
 
 namespace Bundle\RosettaBundle\Service\Scanner;
 
-class BaseScanner
+class Adapter
 {
     protected $messages;
 

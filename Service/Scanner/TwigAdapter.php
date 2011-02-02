@@ -2,7 +2,7 @@
 
 namespace Bundle\RosettaBundle\Service\Scanner;
 
-class TwigScanner extends BaseScanner implements ScannerInterface
+class TwigAdapter extends Adapter implements AdapterInterface
 {
     protected function parseMessages($content)
     {
