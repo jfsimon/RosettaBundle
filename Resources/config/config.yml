@@ -15,7 +15,6 @@ rosetta.config:
             php:      Bundle\RosettaBundle\Service\Deplyer\PhpDumper
             yaml:     Bundle\RosettaBundle\Service\Deplyer\YamlDumper
             xliff:    Bundle\RosettaBundle\Service\Deplyer\XliffDumper
-            csv:      Bundle\RosettaBundle\Service\Deplyer\CsvDumper
     
     workflow:
         translate:    Bundle\RosettaBundle\Service\Workflow\TranslateTask

@@ -22,6 +22,12 @@
 		
 		<parameter key="rosetta.deployer.class">Bundle\RosettaBundle\Service\Deployer\Deployer</parameter>
         <parameter key="rosetta.deployer.config" type="collection">
+        	<parameter key="dumper">yaml</parameter>
+			<parameter key="dumpers" type="collection">
+	            <parameter key="php">Bundle\RosettaBundle\Service\Deplyer\PhpDumper</parameter>
+	            <parameter key="yaml">Bundle\RosettaBundle\Service\Deplyer\YamlDumper</parameter>
+	            <parameter key="xliff">Bundle\RosettaBundle\Service\Deplyer\XliffDumper</parameter>
+	        </parameter>
         </parameter>
 		
 		<parameter key="rosetta.workflow.class">Bundle\RosettaBundle\Service\Workflow\Workflow</parameter>

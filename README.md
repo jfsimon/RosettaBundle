@@ -109,8 +109,14 @@ Full config example in YAML format (these are the default values):
             adapter:      Bundle\RosettaBundle\Service\Translator\GoogleAdapter
             key:          YOUR_GOOGLE_TRANSLATE_KEY
             version:      1 # or 2 for beta varsion
-        locator:          ~
-        deployer:         ~
+        locator:
+            ignore:       [Symfony\Bundle]
+        deployer:
+            dumper:       yaml # or php or xliff
+            dumpers:
+                php:      Bundle\RosettaBundle\Service\Deplyer\PhpDumper
+                yaml:     Bundle\RosettaBundle\Service\Deplyer\YamlDumper
+                xliff:    Bundle\RosettaBundle\Service\Deplyer\XliffDumper
         workflow:
             translate:    Bundle\RosettaBundle\Service\Workflow\TranslateTask
             choose:       Bundle\RosettaBundle\Service\Workflow\ChooseTask
