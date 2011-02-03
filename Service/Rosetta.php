@@ -2,6 +2,8 @@
 
 namespace Bundle\RosettaBundle\Service;
 
+use Bundle\RosettaBundle\Service\Importer;
+
 use Bundle\RosettaBundle\Service\Scanner\Scanner;
 use Bundle\RosettaBundle\Service\Importer\Importer;
 use Bundle\RosettaBundle\Service\Translator\Translator;
@@ -39,9 +41,9 @@ class Rosetta
         return $this->translator->translate($text, $locale);
     }
 
-    public function scanFile($file, $bundle=null)
+    public function scanFile($filename, $bundle=null)
     {
-        return $this->scanner->scanFile($file, $bundle, $this->options);
+        return $this->scanner->scanFile($filename, $bundle, $this->options);
     }
 
     public function scanBundle($bundle)
@@ -54,28 +56,34 @@ class Rosetta
         return $this->scanner->scanProject($this->options);
     }
 
-    public function importFile($file, $bundle=null)
+    public function importFile($filename, $bundle=null)
     {
+        return $this->importer->importFile($filename, $bundle);
     }
 
     public function importBundle($bundle)
     {
+        return $his->importer->importBundle($bundle);
     }
 
     public function importProject()
     {
+        return $his->importer->importProject();
     }
 
     public function deployDomain($bundle, $domain)
     {
+        return $this->deployer->deployDomainName($bundle, $domain);
     }
 
     public function deployBundle($bundle)
     {
+        return $this->deployer->deployBundle($bundle);
     }
 
     public function deployProject()
     {
+        return $this->deployer->deployProject();
     }
 
 }

@@ -74,7 +74,7 @@
     <services>
 		
 		<service id="rosetta.translator" class="%rosetta.translator.class%">
-			<argument>%rosetta.trasnlator.config%</argument>
+			<argument>%rosetta.translator.config%</argument>
         </service>
 		
 		<service id="rosetta.locator" class="%rosetta.locator.class%">
@@ -92,7 +92,7 @@
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="rosetta.translator" />
 			<argument type="service" id="rosetta.deployer" />
-            <argument>%rosetta.dworkflow.config%</argument>
+            <argument>%rosetta.workflow.config%</argument>
         </service>
 		
 		<service id="rosetta.scanner" class="%rosetta.scanner.class%">

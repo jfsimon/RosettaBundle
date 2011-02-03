@@ -10,6 +10,7 @@ class Scanner
     protected $locator;
     protected $adapters;
     protected $tasks;
+    protected $messages;
 
     public function __construct(Locator $locator, Workflow $workflow, array $config)
     {
@@ -18,6 +19,7 @@ class Scanner
         $this->adapters = $config['adapters'];
         unset($config['adapters']);
         $this->tasks = $config;
+        $this->messages = array();
     }
 
     public function getAdapters()
@@ -40,7 +42,7 @@ class Scanner
         $this->tasks = $tasks;
     }
 
-	public function scanFile($file, $bundle=null, $workflow=true)
+	public function scanFile($file, $bundle=null)
     {
         if(is_null($bundle)) {
             $bundle = $this->locator->guessBundle($file);
@@ -48,67 +50,51 @@ class Scanner
 
         $extension = substr($file, strrpos($file, '.') + 1);
 
-        if(! isset($this->adapter[$extension])) {
-            return false;
+        if(! isset($this->adapters[$extension])) {
+            throw new \RuntimeException('Scanner adapter not found for file "'.$file.'"');
         }
 
-        $scanner = $this->getScanner();
-        $scanner->loadFile($file);
+        $adapter = $this->adapters[$extension];
+        $adapter->scanFile($file, $bundle);
 
-        $messages = $scanner->getMessages();
-
-        if($workflow) {
-            $this->processWorkflow($messages, $bundle);
-        }
-
-        return $messages;
+        $this->messages = array_merge($this->messages, $adapter->getMessages());
     }
 
-    public function scanBundle($bundle, $workflow=true)
+    public function scanBundle($bundle)
     {
         $path = $this->locator->locateBundle($bundle);
-        $messages = array();
 
         foreach($this->locator->findFiles($path, array_keys($this->scanners)) as $file) {
-            $messages = array_merge($messages, $this->scanFile($file, $bundle));
+            $this->messages = array_merge($this->messages, $this->scanFile($file, $bundle));
         }
-
-        if($workflow) {
-            $this->processWorkflow($messages, $bundle);
-        }
-
-
-        return $messages;
     }
 
-    public function scanProject($workflow = true)
+    public function scanProject()
     {
-        $messages = array();
-
         foreach($this->locator->getBundles() as $bundle) {
-            $messages = array_merge($messages, $this->scanBundle($bundle));
+            $this->messages = array_merge($this->messages, $this->scanBundle($bundle));
         }
-
-        if($workflow) {
-            $this->processWorkflow($messages, $bundle);
-        }
-
-        return $messages;
     }
 
-    protected function processWorkflow(array $messages, $bundle)
+    public function getMessages()
     {
-        foreach($messages as $message) {
+        return $this->messages;
+    }
+
+    public function process()
+    {
+        foreach($this->messages as $message) {
             $this->workflow->handle(new Input(
                 $message['text'],
                 $message['parameters'],
                 $message['domain'],
-                $bundle,
+                $message['bundle'],
                 $message['choice'],
                 false
             ));
         }
 
         $this->workflow->pocess($this->tasks);
+        $this->messages = array();
     }
 }

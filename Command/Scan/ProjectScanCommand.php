@@ -2,10 +2,8 @@
 
 namespace Bundle\RosettaBundle\Command\Scan;
 
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Output\Output;
 
 class ProjectScanCommand extends ScanCommand
 {
@@ -14,19 +12,16 @@ class ProjectScanCommand extends ScanCommand
         parent::configure();
 
         $this
-            ->setDefinition(array(
-                new InputArgument('bundle', InputArgument::REQUIRED, 'The bundle to scan'),
-            ))
-            ->setName('rosetta:scan:bundle')
-            ->setDescription('Scan given bundle files and extract translations messages')
+            ->setName('rosetta:scan:project')
+            ->setDescription('Scan project files and extract translations messages')
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $rosetta = $this->getRosettaService($input);
-        $messages = $this->container->get('rosetta')->scanBundle($input->getArgument('bundle'));
+        $scanner = $this->getService($input);
+        $scanner->scanProject();
 
-        $this->displayMessages($messages, $input, $output);
+        $this->processWorkflow($scanner, $input, $output);
     }
 }

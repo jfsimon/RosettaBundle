@@ -11,21 +11,22 @@ class Adapter
         $this->messages = array();
     }
 
-    public function scanFile($file)
+    public function scanFile($file, $bundle = null)
     {
-        $this->scan(file_get_contents($file));
+        $this->scan(file_get_contents($file), $bundle);
     }
 
-    public function scan($content)
+    public function scan($content, $bundle = null)
     {
         foreach($this->parseMessages($content) as $message) {
             if(is_array($message)) {
+                $message['bundle'] = $bundle;
                 $this->messages[] = $message;
             }
         }
     }
 
-    public function getMessages()
+    public function getMessages($bundle = null)
     {
         return $this->messages;
     }

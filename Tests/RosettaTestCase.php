@@ -6,8 +6,9 @@ require_once __DIR__.'/../../../../app/AppKernel.php';
 
 use AppKernel;
 use Bundle\RosettaBundle\Service\Locator\Locator;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-abstract class RosettaTestCase extends \PHPUnit_Framework_TestCase
+abstract class RosettaTestCase extends WebTestCase
 {
     protected function getTestFile($file)
     {
@@ -22,5 +23,20 @@ abstract class RosettaTestCase extends \PHPUnit_Framework_TestCase
         $locator = new Locator($kernel,array('ignore' => array('Symfony\\Bundle')));
 
         return $locator;
+    }
+
+    protected function resetDatabase()
+    {
+        $directory = __DIR__.'/../../../..';
+        $commands = array(
+            './app/console doctrine:database:drop',
+            './app/console doctrine:database:create',
+            './app/console doctrine:schema:create',
+        );
+
+        foreach ($commands as $command) {
+            $process = new Process($command, $directory);
+            $process->run();
+        }
     }
 }

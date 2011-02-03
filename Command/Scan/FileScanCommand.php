@@ -5,7 +5,6 @@ namespace Bundle\RosettaBundle\Command\Scan;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Output\Output;
 
 class FileScanCommand extends ScanCommand
 {
@@ -15,7 +14,7 @@ class FileScanCommand extends ScanCommand
 
         $this
             ->setDefinition(array(
-                new InputArgument('file', InputArgument::REQUIRED, 'The file to scan'),
+                new InputArgument('filename', InputArgument::REQUIRED, 'Name of file to scan'),
             ))
             ->setName('rosetta:scan:file')
             ->setDescription('Scan given file and extract translations messages')
@@ -24,9 +23,9 @@ class FileScanCommand extends ScanCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $rosetta = $this->getRosettaService($input);
-        $messages = $this->container->get('rosetta')->scanFile($input->getArgument('file'));
+        $scanner = $this->getService($input);
+        $scanner->scanFile($input->getArgument('filename'));
 
-        $this->displayMessages($messages, $input, $output);
+        $this->processWorkflow($scanner, $input, $output);
     }
 }

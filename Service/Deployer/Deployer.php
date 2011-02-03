@@ -1,6 +1,6 @@
 <?php
 
-namespace Bundle\RosettaBundle\Service\Importer;
+namespace Bundle\RosettaBundle\Service\Deployer;
 
 use Doctrine\ORM\EntityManager;
 use Bundle\RosettaBundle\Service\Locator\Locator;
@@ -45,6 +45,17 @@ class Deployer
 
         foreach ($languages as $language) {
             $this->deployFile($domain, $language, $adapter);
+        }
+    }
+
+    public function deployDomainName($bundle, $domain, $adapter = null)
+    {
+        $domain = $this->em
+            ->getRepository('Bundle\\RosettaBundle\\Model\\Entity\\Domain')
+            ->findBy(array('bundle' => $bundle, 'name' => $domain));
+
+        if ($domain) {
+            $this->deployDomain($domain);
         }
     }
 

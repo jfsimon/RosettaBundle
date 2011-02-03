@@ -51,7 +51,7 @@ class GoogleAdapter extends Adapter implements AdapterInterface
         $json = json_decode($response);
 
         if((int)$json->responseStatus != 200) {
-            throw new \RuntimeException($json['responseDetails']);
+            throw new \RuntimeException($json->responseDetails);
         }
 
         return $json->responseData->translatedText;
