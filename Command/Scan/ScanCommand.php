@@ -2,19 +2,19 @@
 
 namespace Bundle\RosettaBundle\Command\Scan;
 
-use Bundle\RosettaBundle\Command\ProcessWorkflowCommand;
+use Bundle\RosettaBundle\Command\WorkflowCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Bundle\RosettaBundle\Service\Scanner\Scanner;
 
-abstract class ScanCommand extends ProcessWorkflowCommand
+abstract class ScanCommand extends WorkflowCommand
 {
     protected function processWorkflow(Scanner $scanner, InputInterface $input, OutputInterface $output)
     {
         $messages = $scanner->getMessages();
         $scanner->process();
 
-        $this->displayMessages($messages, $input, $output);
+        $this->report($messages, $input, $output);
     }
 
     protected function getServiceName()
@@ -22,7 +22,7 @@ abstract class ScanCommand extends ProcessWorkflowCommand
         return 'rosetta.scanner';
     }
 
-    protected function getDisplayBaseAction()
+    protected function getBaseReportAction()
     {
         return 'scaned';
     }
