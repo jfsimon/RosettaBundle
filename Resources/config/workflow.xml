@@ -1,0 +1,33 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <parameters>
+
+        <parameter key="besimple_rosetta.workflow.class">BeSimple\RosettaBundle\Workflow\Workflow</parameter>
+        <parameter key="besimple_rosetta.load_task.class">BeSimple\RosettaBundle\Workflow\LoadTask</parameter>
+        <parameter key="besimple_rosetta.translate_task.class">BeSimple\RosettaBundle\Workflow\TranslateTask</parameter>
+        <parameter key="besimple_rosetta.save_task.class">BeSimple\RosettaBundle\Workflow\SaveTask</parameter>
+
+    </parameters>
+    <services>
+
+        <service id="besimple_rosetta.workflow" class="%besimple_rosetta.workflow.class%">
+            <argument type="service" id="besimple_rosetta.model_factory"/>
+        </service>
+
+        <service id="besimple_rosetta.load_task" class="%besimple_rosetta.load_task.class%">
+            <argument type="service" id="besimple_rosetta.domain_manager"/>
+        </service>
+
+        <service id="besimple_rosetta.translate_task" class="%besimple_rosetta.translate_task.class%">
+            <argument type="service" id="besimple_rosetta.translator"/>
+        </service>
+
+        <service id="besimple_rosetta.save_task" class="%besimple_rosetta.save_task.class%">
+            <argument type="service" id="besimple_rosetta.domain_manager"/>
+        </service>
+
+    </services>
+</container>

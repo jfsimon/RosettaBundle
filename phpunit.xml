@@ -2,16 +2,16 @@
 
 <phpunit backupGlobals="false"
          backupStaticAttributes="false"
-         colors="false"
-         convertErrorsToExceptions="true"
-         convertNoticesToExceptions="true"
-         convertWarningsToExceptions="true"
+         colors="true"
+         convertErrorsToExceptions="false"
+         convertNoticesToExceptions="false"
+         convertWarningsToExceptions="false"
          stopOnFailure="false"
          syntaxCheck="false"
-         bootstrap="../../autoload.php"
->
+         bootstrap="../../app/bootstrap.php"
+        >
     <testsuites>
-        <testsuite name="Tosetta test suite">
+        <testsuite name="Rosetta Test Suite">
             <directory>./Test/</directory>
         </testsuite>
     </testsuites>

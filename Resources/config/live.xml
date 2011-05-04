@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <parameters>
+
+        <parameter key="besimple_rosetta.live.class">BeSimple\RosettaBundle\Live\Importer</parameter>
+        <parameter key="translator.class">BeSimple\RosettaBundle\Live\Translator</parameter>
+
+    </parameters>
+    <services>
+
+        <service id="besimple_rosetta.live" class="%besimple_rosetta.live.class%">
+            <argument type="service" id="besimple_rosetta.locator"/>
+            <argument type="service" id="besimple_rosetta.workflow"/>
+            <argument>%besimple_rosetta.live.tasks%</argument>
+        </service>
+
+    </services>
+</container>
