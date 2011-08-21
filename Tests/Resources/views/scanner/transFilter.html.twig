@@ -1,0 +1,19 @@
+<h1>BeSimpleRosettaBundle trans test template</h1>
+
+<h2>Basic translation</h2>
+{{ 'I love Symfony2!' | trans() }}
+
+<h2>Translation with a parameter</h2>
+{{ 'I love %what%!' | trans({'%what%': 'Symfony2'}) }}
+
+<h2>Translation with two parameters</h2>
+{{ '%who% love %what%!' | trans({'%who%': 'I', '%what%': 'Symfony2'}) }}
+
+<h2>Translation with a domain</h2>
+{{ 'I love Symfony2!' | trans({}, 'tests') }}
+
+<h2>Translation with a domain and a parameter</h2>
+{{ 'I love %what%!' | trans({'%what%': 'Symfony2'}, 'tests') }}
+
+<h2>Translation with a domain and two parameters</h2>
+{{ '%who% love %what%!' | trans({'%who%': 'I', '%what%': 'Symfony2'}, 'tests') }}

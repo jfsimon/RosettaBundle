@@ -1,0 +1,19 @@
+<h1>BeSimpleRosettaBundle trans test template</h1>
+
+<h2>Basic translation</h2>
+{% trans %}I love Symfony2!{% endtrans %}
+
+<h2>Translation with a parameter</h2>
+{% trans with {'%what%': 'Symfony2'} %}I love %what%!{% endtrans %}
+
+<h2>Translation with two parameters</h2>
+{% trans with {'%who%': 'I', '%what%': 'Symfony2'} %}%who% love %what%!{% endtrans %}
+
+<h2>Basic translation</h2>
+{% trans from 'tests' %}I love Symfony2!{% endtrans %}
+
+<h2>Translation with a parameter</h2>
+{% trans with {'%what%': 'Symfony2'} from 'tests' %}I love %what%!{% endtrans %}
+
+<h2>Translation with two parameters</h2>
+{% trans with {'%who%': 'I', '%what%': 'Symfony2'} from 'tests' %}%who% love %what%!{% endtrans %}
