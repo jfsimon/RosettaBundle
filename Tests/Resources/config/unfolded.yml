@@ -1,0 +1,15 @@
+imports:
+    - { resource: common.yml }
+
+be_simple_rosetta:
+    translator:
+        adapter:  google
+        options:
+            key:  xxx
+            ip:   1.2.3.4
+    dumper:
+        format:   xliff
+        no_merge: false
+    importer:
+        formats:  [xliff, yml, php, csv]
+        then:     backup

@@ -1,0 +1,4 @@
+imports:
+    - { resource: common.yml }
+
+be_simple_rosetta: ~

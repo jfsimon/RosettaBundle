@@ -1,0 +1,7 @@
+imports:
+    - { resource: common.yml }
+
+be_simple_rosetta:
+    translator: google
+    dumper:     xliff
+    importer:   backup
