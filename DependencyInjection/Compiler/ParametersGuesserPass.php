@@ -22,7 +22,7 @@ class ParametersGuesserPass implements CompilerPassInterface
             $definition = $container->getDefinition($id);
             $alias      = explode('.', $attributes[0]['alias']);
 
-            if ($alias === 'wrapper') {
+            if ($alias[0] === 'wrapper') {
                 $wrapper = $definition;
             } else {
                 $wrapped[] = $definition;

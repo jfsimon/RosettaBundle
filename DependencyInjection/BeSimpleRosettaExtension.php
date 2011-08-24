@@ -54,8 +54,10 @@ class BeSimpleRosettaExtension extends Extension
             }
         }
 
-        $container->setParameter('be_simple_rosetta.parameters_guesser.regexp', $parametersRegexps);
-        $container->setParameter('be_simple_rosetta.parameters_guesser.glob', $parametersGlobs);
+        $container->setParameter('be_simple_rosetta.parameters_guesser.regexps', $parametersRegexps);
+        $container->setParameter('be_simple_rosetta.parameters_guesser.globs', $parametersGlobs);
+
+
 
         $container->setParameter('be_simple_rosetta.translator.options', $config['translator']['options']);
     }

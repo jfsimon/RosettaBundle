@@ -81,19 +81,19 @@
 
         <service id="be_simple_rosetta.translator.google" class="%be_simple_rosetta.translator.google.class%">
             <tag name="be_simple_rosetta.translator" alias="google" />
-            <argument type="collection">%be_simple_rosetta.translator.options%</argument>
+            <argument>%be_simple_rosetta.translator.options%</argument>
         </service>
 
         <!-- parameters guessers -->
 
         <service id="be_simple_rosetta.parameters_guesser.regexp" class="%be_simple_rosetta.parameters_guesser.regexp.class%">
             <tag name="be_simple_rosetta.parameters_guesser" alias="regexp" />
-            <argument type="collection">%be_simple_rosetta.parameters_guesser.regexps%</argument>
+            <argument>%be_simple_rosetta.parameters_guesser.regexps%</argument>
         </service>
 
         <service id="be_simple_rosetta.parameters_guesser.glob" class="%be_simple_rosetta.parameters_guesser.glob.class%">
             <tag name="be_simple_rosetta.parameters_guesser" alias="glob" />
-            <argument type="collection">%be_simple_rosetta.parameters_guesser.globs%</argument>
+            <argument>%be_simple_rosetta.parameters_guesser.globs%</argument>
         </service>
 
         <service id="be_simple_rosetta.parameters_guesser.wrapper" class="%be_simple_rosetta.parameters_guesser.wrapper.class%">
