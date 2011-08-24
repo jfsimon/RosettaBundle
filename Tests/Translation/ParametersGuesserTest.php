@@ -55,6 +55,10 @@ class ParametersGuesserTest extends TestCase
         return array(
             new ParametersGuesser\RegexpParametersGuesser(array('/{{[^}}]+}}/i', '/%[^%]+%/i')),
             new ParametersGuesser\GlobParametersGuesser(array('{{*}}', '%*%')),
+            new ParametersGuesser\ParametersGuesserWrapper(array(
+                new ParametersGuesser\RegexpParametersGuesser(array('/{{[^}}]+}}/i')),
+                new ParametersGuesser\GlobParametersGuesser(array('%*%')),
+            )),
         );
     }
 }
