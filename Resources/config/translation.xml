@@ -1,0 +1,105 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <parameters>
+
+        <parameter key="be_simple_rosetta.dumper.yml.class">BeSimple\RosettaBundle\Translation\Dumper\YamlFileDumper</parameter>
+        <parameter key="be_simple_rosetta.dumper.xliff.class">BeSimple\RosettaBundle\Translation\Dumper\XliffFileDumper</parameter>
+        <parameter key="be_simple_rosetta.dumper.php.class">BeSimple\RosettaBundle\Translation\Dumper\PhpFileDumper</parameter>
+        <parameter key="be_simple_rosetta.dumper.csv.class">BeSimple\RosettaBundle\Translation\Dumper\CsvFileDumper</parameter>
+
+        <parameter key="be_simple_rosetta.scanner.php.trans.class">BeSimple\RosettaBundle\Translation\Scanner\Php\PhpTransScanner</parameter>
+        <parameter key="be_simple_rosetta.scanner.php.trans_choice.class">BeSimple\RosettaBundle\Translation\Scanner\Php\PhpTransChoiceScanner</parameter>
+        <parameter key="be_simple_rosetta.scanner.twig.trans.class">BeSimple\RosettaBundle\Translation\Scanner\Twig\TwigTransScanner</parameter>
+        <parameter key="be_simple_rosetta.scanner.twig.trans_choice.class">BeSimple\RosettaBundle\Translation\Scanner\Twig\TwigTransChoiceScanner</parameter>
+        <parameter key="be_simple_rosetta.scanner.wrapper.class">BeSimple\RosettaBundle\Translation\Scanner\ScannerWrapper</parameter>
+
+        <parameter key="be_simple_rosetta.translator.google.class">BeSimple\RosettaBundle\Translation\Webservice\GoogleTranslator</parameter>
+
+        <parameter key="be_simple_rosetta.parameters_guesser.regexp.class">BeSimple\RosettaBundle\Translation\ParametersGuesser\RegexpParametersGuesser</parameter>
+        <parameter key="be_simple_rosetta.parameters_guesser.glob.class">BeSimple\RosettaBundle\Translation\ParametersGuesser\GlobParametersGuesser</parameter>
+        <parameter key="be_simple_rosetta.parameters_guesser.wrapper.class">BeSimple\RosettaBundle\Translation\ParametersGuesser\ParametersGuesserWrapper</parameter>
+
+    </parameters>
+    <services>
+
+        <!-- dumpers -->
+
+        <service id="be_simple_rosetta.dumper.yml" class="%be_simple_rosetta.dumper.yml.class%">
+            <argument type="service" id="be_simple_rosetta.model.helper" />
+            <tag name="be_simple_rosetta.dumper" alias="yml" />
+        </service>
+
+        <service id="be_simple_rosetta.dumper.xliff" class="%be_simple_rosetta.dumper.xliff.class%">
+            <argument type="service" id="be_simple_rosetta.model.helper" />
+            <tag name="be_simple_rosetta.dumper" alias="xliff" />
+        </service>
+
+        <service id="be_simple_rosetta.dumper.php" class="%be_simple_rosetta.dumper.php.class%">
+            <argument type="service" id="be_simple_rosetta.model.helper" />
+            <tag name="be_simple_rosetta.dumper" alias="php" />
+        </service>
+
+        <service id="be_simple_rosetta.dumper.csv" class="%be_simple_rosetta.dumper.csv.class%">
+            <argument type="service" id="be_simple_rosetta.model.helper" />
+            <tag name="be_simple_rosetta.dumper" alias="csv" />
+        </service>
+
+        <!-- scanners -->
+
+        <service id="be_simple_rosetta.scanner.php.trans" class="%be_simple_rosetta.scanner.php.trans.class%">
+            <tag name="be_simple_rosetta.scanner" alias="php.trans" />
+        </service>
+
+        <service id="be_simple_rosetta.scanner.php.trans_choice" class="%be_simple_rosetta.scanner.php.trans_choice.class%">
+            <tag name="be_simple_rosetta.scanner" alias="php.trans_choice" />
+        </service>
+
+        <service id="be_simple_rosetta.scanner.php" class="%be_simple_rosetta.scanner.wrapper.class%">
+            <tag name="be_simple_rosetta.scanner" alias="php" />
+            <!-- wrapped scanners -->
+        </service>
+
+        <service id="be_simple_rosetta.scanner.twig.trans" class="%be_simple_rosetta.scanner.twig.trans.class%">
+            <tag name="be_simple_rosetta.scanner" alias="twig.trans" />
+            <argument type="service" id="twig" />
+        </service>
+
+        <service id="be_simple_rosetta.scanner.twig.trans_choice" class="%be_simple_rosetta.scanner.twig.trans_choice.class%">
+            <tag name="be_simple_rosetta.scanner" alias="twig.trans_choice" />
+            <argument type="service" id="twig" />
+        </service>
+
+        <service id="be_simple_rosetta.scanner.twig" class="%be_simple_rosetta.scanner.wrapper.class%">
+            <tag name="be_simple_rosetta.scanner" alias="twig" />
+            <!-- wrapped scanners -->
+        </service>
+
+        <!-- translators -->
+
+        <service id="be_simple_rosetta.translator.google" class="%be_simple_rosetta.translator.google.class%">
+            <tag name="be_simple_rosetta.translator" alias="google" />
+            <argument type="collection">%be_simple_rosetta.translator.options%</argument>
+        </service>
+
+        <!-- parameters guessers -->
+
+        <service id="be_simple_rosetta.parameters_guesser.regexp" class="%be_simple_rosetta.parameters_guesser.regexp.class%">
+            <tag name="be_simple_rosetta.parameters_guesser" alias="regexp" />
+            <argument type="collection">%be_simple_rosetta.parameters_guesser.regexps%</argument>
+        </service>
+
+        <service id="be_simple_rosetta.parameters_guesser.glob" class="%be_simple_rosetta.parameters_guesser.glob.class%">
+            <tag name="be_simple_rosetta.parameters_guesser" alias="glob" />
+            <argument type="collection">%be_simple_rosetta.parameters_guesser.globs%</argument>
+        </service>
+
+        <service id="be_simple_rosetta.parameters_guesser.wrapper" class="%be_simple_rosetta.parameters_guesser.wrapper.class%">
+            <tag name="be_simple_rosetta.parameters_guesser" alias="wrapper" />
+            <!-- wrapped guessers -->
+        </service>
+
+    </services>
+</container>
