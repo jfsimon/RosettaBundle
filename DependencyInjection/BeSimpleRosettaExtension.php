@@ -77,5 +77,8 @@ class BeSimpleRosettaExtension extends Extension
 
         $container->setParameter('be_simple_rosetta.backup.directory', $config['backup']['directory']);
         $container->setParameter('be_simple_rosetta.backup.date_format', $config['backup']['date_format']);
+
+        $container->setParameter('be_simple_rosetta.dumper.format', $config['dumper']['format']);
+        $container->setParameter('be_simple_rosetta.dumper.backup', $config['dumper']['backup']);
     }
 }

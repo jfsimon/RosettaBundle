@@ -8,6 +8,7 @@
         <parameter key="be_simple_rosetta.factory.class">BeSimple\RosettaBundle\Rosetta\Factory</parameter>
         <parameter key="be_simple_rosetta.locator.class">BeSimple\RosettaBundle\Rosetta\Locator</parameter>
         <parameter key="be_simple_rosetta.backup.class">BeSimple\RosettaBundle\Rosetta\Backup</parameter>
+        <parameter key="be_simple_rosetta.dumper.class">BeSimple\RosettaBundle\Rosetta\Dumper</parameter>
 
     </parameters>
     <services>
@@ -32,6 +33,14 @@
         <service id="be_simple_rosetta.backup" class="%be_simple_rosetta.backup.class%">
             <argument>%be_simple_rosetta.backup.directory%</argument>
             <argument>%be_simple_rosetta.backup.date_format%</argument>
+        </service>
+
+        <service id="be_simple_rosetta.dumper" class="%be_simple_rosetta.dumper.class%">
+            <argument type="service" id="be_simple_rosetta.factory" />
+            <argument type="service" id="be_simple_rosetta.locator" />
+            <argument type="service" id="be_simple_rosetta.backup" />
+            <argument>%be_simple_rosetta.dumper.format%</argument>
+            <argument>%be_simple_rosetta.dumper.backup%</argument>
         </service>
 
     </services>

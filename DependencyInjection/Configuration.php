@@ -145,6 +145,7 @@ class Configuration implements ConfigurationInterface
                     ->end()
                     ->children()
                         ->scalarNode('format')->defaultValue($this->defaultDumper)->end()
+                        ->booleanNode('backup')->defaultFalse()->end()
                         ->booleanNode('no_merge')->defaultFalse()->end()
                         ->booleanNode('enabled')->defaultTrue()->end()
                     ->end()
