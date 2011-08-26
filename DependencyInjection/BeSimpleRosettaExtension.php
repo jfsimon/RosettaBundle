@@ -28,7 +28,7 @@ class BeSimpleRosettaExtension extends Extension
         $this->setupRosettaServices($config, $container);
         $loader->load('rosetta.xml');
 
-        $loader->load($config['db_adapter'].'.xml');
+        $loader->load('model.xml');
 
         // todo: manage the fact that services can be disabled (is this useful ?)
     }
@@ -74,5 +74,8 @@ class BeSimpleRosettaExtension extends Extension
         $container->setParameter('be_simple_rosetta.locator.bundles', $config['manage']['bundles']);
         $container->setParameter('be_simple_rosetta.locator.app_dir', $config['manage']['app_dir']);
         $container->setParameter('be_simple_rosetta.locator.src_dir', $config['manage']['src_dir']);
+
+        $container->setParameter('be_simple_rosetta.backup.directory', $config['backup']['directory']);
+        $container->setParameter('be_simple_rosetta.backup.date_format', $config['backup']['date_format']);
     }
 }

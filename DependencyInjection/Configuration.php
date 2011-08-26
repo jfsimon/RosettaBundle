@@ -47,6 +47,16 @@ class Configuration implements ConfigurationInterface
     private $defaultManageValue;
 
     /**
+     * @var string
+     */
+    private $defaultBackupDirectory;
+
+    /**
+     * @var string
+     */
+    private $defaultBackupDateFormat;
+
+    /**
      * Constructor.
      */
     public function __construct()
@@ -61,6 +71,8 @@ class Configuration implements ConfigurationInterface
         $this->availableImporterActions  = array('keep', 'backup', 'remove');
         $this->defaultParametersGuessers = array('{*}', '{{*}}'); //, '%*%');
         $this->defaultManageValue        = array('app', 'src');
+        $this->defaultBackupDirectory    = 'backups';
+        $this->defaultBackupDateFormat   = 'YmdHis';
     }
 
     /**
@@ -77,6 +89,7 @@ class Configuration implements ConfigurationInterface
         $this->addDumperSection($rootNode);
         $this->addImporterSection($rootNode);
         $this->addManageSection($rootNode);
+        $this->addBackupSection($rootNode);
 
         return $treeBuilder;
     }
@@ -240,6 +253,34 @@ class Configuration implements ConfigurationInterface
                         ->end()
                         ->booleanNode('app_dir')->defaultFalse()->end()
                         ->booleanNode('src_dir')->defaultFalse()->end()
+                    ->end()
+                ->end()
+            ->end()
+        ;
+    }
+
+    /**
+     * @param ArrayNodeDefinition $rootNode
+     */
+    private function addBackupSection(ArrayNodeDefinition $rootNode)
+    {
+        $rootNode
+            ->children()
+                ->arrayNode('backup')
+                    ->addDefaultsIfNotSet()
+                    ->beforeNormalization()
+                        ->ifNull()->thenEmptyArray()
+                        ->ifTrue()->thenEmptyArray()
+                        ->ifString()->then(function($value) {
+                            return 'disabled' === $value
+                                ? array('enabled' => false)
+                                : array('directory' => $value);
+                        })
+                    ->end()
+                    ->children()
+                        ->scalarNode('directory')->defaultValue($this->defaultBackupDirectory)->end()
+                        ->scalarNode('date_format')->defaultValue($this->defaultBackupDateFormat)->end()
+                        ->booleanNode('enabled')->defaultTrue()->end()
                     ->end()
                 ->end()
             ->end()
