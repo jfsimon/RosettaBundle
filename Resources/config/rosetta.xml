@@ -6,6 +6,7 @@
     <parameters>
 
         <parameter key="be_simple_rosetta.factory.class">BeSimple\RosettaBundle\Rosetta\Factory</parameter>
+        <parameter key="be_simple_rosetta.locator.class">BeSimple\RosettaBundle\Rosetta\Locator</parameter>
 
     </parameters>
     <services>
@@ -18,6 +19,13 @@
             <argument /> <!-- scanners -->
             <argument /> <!-- parameters guessers -->
             <argument>%be_simple_rosetta.factory.defaults%</argument>
+        </service>
+
+        <service id="be_simple_rosetta.locator" class="%be_simple_rosetta.locator.class%">
+            <argument type="service" id="kernel" />
+            <argument>%be_simple_rosetta.locator.bundles%</argument>
+            <argument>%be_simple_rosetta.locator.app_dir%</argument>
+            <argument>%be_simple_rosetta.locator.src_dir%</argument>
         </service>
 
     </services>

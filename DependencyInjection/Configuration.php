@@ -17,6 +17,36 @@ class Configuration implements ConfigurationInterface
     private $arrayWrapper;
 
     /**
+     * @var array
+     */
+    private $defaultLoaders;
+
+    /**
+     * @var string
+     */
+    private $defaultDumper;
+
+    /**
+     * @var string
+     */
+    private $defaultTranslator;
+
+    /**
+     * @var array
+     */
+    private $availableImporterActions;
+
+    /**
+     * @var array
+     */
+    private $defaultParametersGuessers;
+
+    /**
+     * @var array
+     */
+    private $defaultManageValue;
+
+    /**
      * Constructor.
      */
     public function __construct()
@@ -24,6 +54,13 @@ class Configuration implements ConfigurationInterface
         $this->arrayWrapper = function($value) {
             return array($value);
         };
+
+        $this->defaultLoaders            = array('xliff', 'yml', 'php', 'csv');
+        $this->defaultDumper             = 'xliff';
+        $this->defaultTranslator         = 'google';
+        $this->availableImporterActions  = array('keep', 'backup', 'remove');
+        $this->defaultParametersGuessers = array('{*}', '{{*}}'); //, '%*%');
+        $this->defaultManageValue        = array('app', 'src');
     }
 
     /**
@@ -39,6 +76,7 @@ class Configuration implements ConfigurationInterface
         $this->addTranslatorSection($rootNode);
         $this->addDumperSection($rootNode);
         $this->addImporterSection($rootNode);
+        $this->addManageSection($rootNode);
 
         return $treeBuilder;
     }
@@ -62,7 +100,7 @@ class Configuration implements ConfigurationInterface
                         })
                     ->end()
                     ->children()
-                        ->scalarNode('adapter')->defaultValue('google')->end()
+                        ->scalarNode('adapter')->defaultValue($this->defaultTranslator)->end()
                         ->arrayNode('options')
                             ->defaultValue(array())
                             ->prototype('scalar')->end()
@@ -93,7 +131,7 @@ class Configuration implements ConfigurationInterface
                         })
                     ->end()
                     ->children()
-                        ->scalarNode('format')->defaultValue('xliff')->end()
+                        ->scalarNode('format')->defaultValue($this->defaultDumper)->end()
                         ->booleanNode('no_merge')->defaultFalse()->end()
                         ->booleanNode('enabled')->defaultTrue()->end()
                     ->end()
@@ -107,9 +145,6 @@ class Configuration implements ConfigurationInterface
      */
     private function addImporterSection(ArrayNodeDefinition $rootNode)
     {
-        $defaultLoaders    = array('xliff', 'yml', 'php', 'csv');
-        $defaultParameters = array('{*}', '{{*}}'); //, '%*%');
-
         $rootNode
             ->children()
                 ->arrayNode('importer')
@@ -125,21 +160,86 @@ class Configuration implements ConfigurationInterface
                     ->end()
                     ->children()
                         ->arrayNode('formats')
-                            ->defaultValue($defaultLoaders)
+                            ->defaultValue($this->defaultLoaders)
                             ->beforeNormalization()
                                 ->ifString()->then($this->arrayWrapper)
                             ->end()
                             ->prototype('scalar')->end()
                         ->end()
                         ->arrayNode('parameters')
-                            ->defaultValue($defaultParameters)
+                            ->defaultValue($this->defaultParametersGuessers)
                             ->beforeNormalization()
                                 ->ifString()->then($this->arrayWrapper)
                             ->end()
                             ->prototype('scalar')->end()
                         ->end()
-                        ->scalarNode('then')->defaultValue('backup')->end()
+                        ->scalarNode('then')
+                            ->validate()
+                                ->ifNotInArray($this->availableImporterActions)
+                                ->thenInvalid('Importer.then valid options are "'.implode('", "', $this->availableImporterActions).'"; "%s" found instead.')
+                            ->end()
+                            ->defaultValue('backup')
+                        ->end()
                         ->booleanNode('enabled')->defaultTrue()->end()
+                    ->end()
+                ->end()
+            ->end()
+        ;
+    }
+
+    /**
+     * @param ArrayNodeDefinition $rootNode
+     */
+    protected function addManageSection(ArrayNodeDefinition $rootNode)
+    {
+        $that = $this;
+        $setDefaults = function() use ($that) {
+            return $that->defaultManageValue;
+        };
+
+        $rootNode
+            ->children()
+                ->arrayNode('manage')
+                    ->addDefaultsIfNotSet()
+                    ->beforeNormalization()
+                        ->ifNull()->then($setDefaults)
+                        ->ifTrue()->then($setDefaults)
+                        ->ifArray()->then(function ($values) {
+                            $manage = array();
+                            foreach ($values as $value) {
+                                if ('app' === $value) {
+                                    $manage['app_dir'] = true;
+                                } else if ('src' === $value) {
+                                    $manage['src_dir'] = true;
+                                } else {
+                                    if (!isset($manage['bundles'])) {
+                                        $manage['bundles'] = array();
+                                    }
+                                    $manage['bundles'][] = $value;
+                                }
+                            }
+                            return $manage;
+                        })
+                        ->ifString()->then(function($value) {
+                            if ('app' === $value) {
+                                return array('app_dir' => true);
+                            } else if ('src' === $value) {
+                                return array('src_dir' => true);
+                            } else {
+                                return array('bundles' => $value);
+                            }
+                        })
+                    ->end()
+                    ->children()
+                        ->arrayNode('bundles')
+                            ->defaultValue(array())
+                            ->beforeNormalization()
+                                ->ifString()->then($this->arrayWrapper)
+                            ->end()
+                            ->prototype('scalar')->end()
+                        ->end()
+                        ->booleanNode('app_dir')->defaultFalse()->end()
+                        ->booleanNode('src_dir')->defaultFalse()->end()
                     ->end()
                 ->end()
             ->end()
