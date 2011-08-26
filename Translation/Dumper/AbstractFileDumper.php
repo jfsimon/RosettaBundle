@@ -2,7 +2,6 @@
 
 namespace BeSimple\RosettaBundle\Translation\Dumper;
 
-use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\HttpKernel\Util\Filesystem;
 
 /**
@@ -21,7 +20,7 @@ class AbstractFileDumper extends AbstractDumper
         $directory = dirname($resource);
         if (!file_exists($directory)) {
             $fs = new Filesystem();
-            $fs->mkdir($directory);
+            $fs->mkdir($directory, 0755);
         }
 
         if (false === file_put_contents($resource, $content)) {
