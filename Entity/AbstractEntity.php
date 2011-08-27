@@ -1,6 +1,6 @@
 <?php
 
-namespace BeSimple\RosettaBundle\Model;
+namespace BeSimple\RosettaBundle\Entity;
 
 /**
  * @author: Jean-François Simon <contact@jfsimon.fr>
@@ -23,7 +23,7 @@ abstract class AbstractEntity
     protected $updatedAt;
 
     /**
-     * @return mixed
+     * @return int
      */
     public function getId()
     {

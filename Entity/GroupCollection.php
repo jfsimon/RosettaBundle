@@ -1,6 +1,6 @@
 <?php
 
-namespace BeSimple\RosettaBundle\Model;
+namespace BeSimple\RosettaBundle\Entity;
 
 /**
  * @author: Jean-François Simon <contact@jfsimon.fr>

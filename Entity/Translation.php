@@ -1,6 +1,6 @@
 <?php
 
-namespace BeSimple\RosettaBundle\Model;
+namespace BeSimple\RosettaBundle\Entity;
 
 /**
  * @author: Jean-François Simon <contact@jfsimon.fr>
@@ -41,13 +41,15 @@ class Translation extends AbstractEntity
      * @param string|null $locale
      * @param string|null $text
      */
-    public function __construct($locale = null, $text = null)
+    public function __construct(Message $message, $locale = null, $text = null)
     {
-        $this->createdAt = new \DateTime();
-        $this->updatedAt = new \DateTime();
-        $this->locale    = $locale;
-        $this->text      = $text;
-        $this->rating    = 0;
+        $this->createdAt  = new \DateTime();
+        $this->updatedAt  = new \DateTime();
+        $this->message    = $message;
+        $this->locale     = $locale;
+        $this->text       = $text;
+        $this->rating     = 0;
+        $this->isSelected = false;
     }
 
     /**
@@ -67,7 +69,7 @@ class Translation extends AbstractEntity
      *
      * @return Message
      */
-    public function update(HelperInterface $helper)
+    public function cleanup(HelperInterface $helper)
     {
         $this->hash  = $helper->hash($this->text);
 

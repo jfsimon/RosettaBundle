@@ -1,6 +1,6 @@
 <?php
 
-namespace BeSimple\RosettaBundle\Model;
+namespace BeSimple\RosettaBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -45,7 +45,10 @@ class Message extends AbstractEntity
     protected $translations;
 
     /**
+     * Constructor.
+     *
      * @param string|null $text
+     *
      * @param array $parameters
      */
     public function __construct(Group $group = null, $text = null, array $parameters = array())
@@ -64,6 +67,7 @@ class Message extends AbstractEntity
 
     /**
      * @param Message $message
+     *
      * @return bool
      */
     public function isSameAs(Message $message)
@@ -79,7 +83,7 @@ class Message extends AbstractEntity
      *
      * @return Message
      */
-    public function update(HelperInterface $helper)
+    public function cleanup(HelperInterface $helper)
     {
         $this->hash  = $helper->hash($this->text);
         $this->isKey = $helper->isKey($this->text);
@@ -88,11 +92,16 @@ class Message extends AbstractEntity
             $this->isChoice = $helper->isChoice($this->text);
         }
 
+        foreach ($this->translations as $translation) {
+            $translation->cleanup($helper);
+        }
+
         return $this;
     }
 
     /**
      * @param Group $group
+     *
      * @return Message
      */
     public function setGroup($group)
@@ -112,6 +121,7 @@ class Message extends AbstractEntity
 
     /**
      * @param string $text
+     *
      * @return Message
      */
     public function setText($text)
@@ -146,6 +156,18 @@ class Message extends AbstractEntity
     }
 
     /**
+     * @param bool $isChoice
+     *
+     * @return Message
+     */
+    public function setIsChoice($isChoice)
+    {
+        $this->isChoice = $isChoice;
+
+        return $this;
+    }
+
+    /**
      * @return boolean
      */
     public function getIsKey()
@@ -155,6 +177,7 @@ class Message extends AbstractEntity
 
     /**
      * @param string[] $parameters
+     *
      * @return Message
      */
     public function setParameters(array $parameters)
