@@ -2,7 +2,7 @@
 
 namespace BeSimple\RosettaBundle\Translation\Dumper;
 
-use BeSimple\RosettaBundle\Model\Helper;
+use BeSimple\RosettaBundle\Entity\Helper;
 
 /**
  * @author: Jean-François Simon <contact@jfsimon.fr>
