@@ -2,14 +2,14 @@
 
 namespace BeSimple\RosettaBundle\Tests\Rosetta;
 
-use BeSimple\RosettaBundle\Tests\WebTestCase;
+use BeSimple\RosettaBundle\Tests\AppTestCase;
 use Symfony\Component\HttpKernel\Util\Filesystem;
 use Symfony\Component\Finder\Finder;
 
 /**
  * @author: Jean-François Simon <contact@jfsimon.fr>
  */
-class BackupTest extends WebTestCase
+class BackupTest extends AppTestCase
 {
     const BACKUP_DIRECTORY   = 'backups';
     const BACKUP_DATE_FORMAT = 'YmdHis';
@@ -18,12 +18,16 @@ class BackupTest extends WebTestCase
 
     static public function setUpBeforeClass()
     {
-        static::createClient('minimalist');
-        static::$backup = static::$kernel->getContainer()->get('be_simple_rosetta.backup');
+        static::$backup = static::createKernel()
+            ->getContainer()
+            ->get('be_simple_rosetta.backup')
+        ;
     }
 
     static public function tearDownAfterClass()
     {
+        static::destroyKernel();
+
         $fs = new Filesystem();
         $fs->remove(static::getDirectory());
     }

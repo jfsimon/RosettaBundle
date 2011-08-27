@@ -3,7 +3,7 @@
 namespace BeSimple\RosettaBundle\Tests\Model;
 
 use BeSimple\RosettaBundle\Tests\TestCase;
-use BeSimple\RosettaBundle\Model\Helper;
+use BeSimple\RosettaBundle\Entity\Helper;
 
 /**
  * @author: Jean-François Simon <contact@jfsimon.fr>

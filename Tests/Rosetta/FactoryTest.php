@@ -2,27 +2,27 @@
 
 namespace BeSimple\RosettaBundle\Tests\Rosetta;
 
-use BeSimple\RosettaBundle\Tests\WebTestCase;
+use BeSimple\RosettaBundle\Tests\AppTestCase;
 
 /**
  * @author: Jean-François Simon <contact@jfsimon.fr>
  */
-class FactoryTest extends WebTestCase
+class FactoryTest extends AppTestCase
 {
     /**
      * @dataProvider provideClassesData
      */
-    public function testClasses($config, $method, $adapter, $expectedClassname)
+    public function testClasses($config, $method, $adapter, $expectedClassName)
     {
-        self::createClient($config);
-
-        $object = static::$kernel
-             ->getContainer()
-             ->get('be_simple_rosetta.factory')
-             ->$method($adapter)
+        $object = self::createKernel($config)
+            ->getContainer()
+            ->get('be_simple_rosetta.factory')
+            ->$method($adapter)
         ;
 
-        $this->assertEquals($expectedClassname, get_class($object));
+        $this->assertEquals($expectedClassName, get_class($object));
+
+        static::destroyKernel();
     }
 
     public function provideClassesData()

@@ -11,7 +11,7 @@ class AppKernel extends Kernel
     /**
      * @var string
      */
-    private $tmpDirectory;
+    private $tempDir;
 
     /**
      * @var string
@@ -26,10 +26,10 @@ class AppKernel extends Kernel
      * @param string $environment
      * @param bool   $debug
      */
-    public function __construct($tmpDirectory, $configFile, $environment, $debug)
+    public function __construct($tempDir, $configFile, $environment, $debug)
     {
-        $this->tmpDirectory = $tmpDirectory;
-        $this->configFile   = $configFile;
+        $this->tempDir    = $tempDir;
+        $this->configFile = $configFile;
 
         parent::__construct($environment, $debug);
     }
@@ -68,12 +68,17 @@ class AppKernel extends Kernel
         return __DIR__;
     }
 
+    public function getTempDir()
+    {
+        return $this->tempDir;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function getCacheDir()
     {
-        return $this->tmpDirectory.'/cache/'.$this->environment;
+        return $this->tempDir.'/cache';
     }
 
     /**
@@ -81,7 +86,7 @@ class AppKernel extends Kernel
      */
     public function getLogDir()
     {
-        return $this->tmpDirectory.'/logs';
+        return $this->tempDir.'/logs';
     }
 
     /**

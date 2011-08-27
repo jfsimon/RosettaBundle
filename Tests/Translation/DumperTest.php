@@ -3,7 +3,7 @@
 namespace BeSimple\RosettaBundle\Tests\Translation;
 
 use BeSimple\RosettaBundle\Tests\TestCase;
-use BeSimple\RosettaBundle\Model\Helper;
+use BeSimple\RosettaBundle\Entity\Helper;
 use BeSimple\RosettaBundle\Translation\Dumper;
 use Symfony\Component\Translation\Loader;
 use Symfony\Component\HttpKernel\Util\Filesystem;
