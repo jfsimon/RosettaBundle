@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+    http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+    <entity name="BeSimple\RosettaBundle\Entity\Group" table="be_simple_rosetta_group">
+
+        <field name="bundle" column="bundle" type="string" length="255" />
+        <field name="domain" column="domain" type="string" length="255" />
+
+        <one-to-many field="messages" target-entity="BeSimple\RosettaBundle\Entity\Message" mapped-by="group">
+            <cascade>
+                <cascade-persist />
+            </cascade>
+        </one-to-many>
+
+        <indexes>
+            <index name="be_simple_rosetta_group_idx" columns="bundle,domain" type="unique" />
+        </indexes>
+
+    </entity>
+</doctrine-mapping>
