@@ -19,6 +19,8 @@ twig:
 doctrine:
     dbal:
         charset:  UTF8
+        driver:   pdo_sqlite
+        path:     %kernel.root_dir%/Resources/data/rosetta.db
     orm:
         auto_generate_proxy_classes: true
         auto_mapping: true
