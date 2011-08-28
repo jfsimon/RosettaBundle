@@ -9,6 +9,9 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class Group extends AbstractEntity
 {
+    const UNKNOWN_BUNDLE = 'Unknown';
+    const UNKNOWN_DOMAIN = '_unknown';
+
     /**
      * @var string
      */
@@ -28,7 +31,7 @@ class Group extends AbstractEntity
      * @param string|null $bundle
      * @param string|null $domain
      */
-    public function __construct($bundle = null, $domain = null)
+    public function __construct($bundle = self::UNKNOWN_BUNDLE, $domain = self::UNKNOWN_DOMAIN)
     {
         $this->createdAt = new \DateTime();
         $this->updatedAt = new \DateTime();
