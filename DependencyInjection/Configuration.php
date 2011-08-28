@@ -110,6 +110,7 @@ class Configuration implements ConfigurationInterface
         $this->addBackupSection($rootNode);
         $this->addModelSection($rootNode);
         $this->addWorkflowSection($rootNode);
+        $this->addLocalesSection($rootNode);
 
         return $treeBuilder;
     }
@@ -351,6 +352,38 @@ class Configuration implements ConfigurationInterface
                         ->arrayNode('tasks')
                             ->prototype('scalar')
                             ->defaultValue($this->defaultTasks)
+                        ->end()
+                    ->end()
+                ->end()
+            ->end()
+        ;
+    }
+
+    /**
+     * @param ArrayNodeDefinition $rootNode
+     */
+    protected function addLocalesSection(ArrayNodeDefinition $rootNode)
+    {
+        $rootNode
+            ->children()
+                ->arrayNode('locales')
+                    ->addDefaultsIfNotSet()
+                    ->beforeNormalization()
+                        ->ifArray()->then(function($values) {
+                            return range(0, count($values) - 1) === array_keys($values)
+                                ? array('translations' => $values)
+                                : $values;
+                        })
+                        ->ifNull()->thenEmptyArray()
+                        ->ifTrue()->thenEmptyArray()
+                        ->ifString()->then(function($value) {
+                            return array('translations' => array($value));
+                        })
+                    ->end()
+                    ->children()
+                        ->scalarNode('source')->defaultValue('%session.default_locale%')->end()
+                        ->arrayNode('translations')
+                            ->prototype('scalar')->end()
                         ->end()
                     ->end()
                 ->end()

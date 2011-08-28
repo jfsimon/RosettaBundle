@@ -13,7 +13,9 @@
         <parameter key="be_simple_rosetta.processor.class">BeSimple\RosettaBundle\Rosetta\Workflow\Processor</parameter>
         <parameter key="be_simple_rosetta.tasks.class">BeSimple\RosettaBundle\Rosetta\Workflow\Tasks</parameter>
 
-        <parameter key="be_simple_rosetta.collector.class">BeSimple\RosettaBundle\Rosetta\Workflow\Tasks</parameter>
+        <parameter key="be_simple_rosetta.collector.class">BeSimple\RosettaBundle\Rosetta\Collector\Collector</parameter>
+        <parameter key="be_simple_rosetta.importer.class">BeSimple\RosettaBundle\Rosetta\Collector\Importer</parameter>
+        <parameter key="be_simple_rosetta.scanner.class">BeSimple\RosettaBundle\Rosetta\Collector\Scanner</parameter>
 
     </parameters>
     <services>
@@ -59,6 +61,25 @@
 
         <service id="be_simple_rosetta.tasks" class="%be_simple_rosetta.tasks.class%">
             <argument>%be_simple_rosetta.tasks.configs%</argument>
+        </service>
+
+        <!-- collectors -->
+
+        <service id="be_simple_rosetta.collector" class="%be_simple_rosetta.collector.class%">
+            <argument type="service" id="be_simple_rosetta.factory" />
+            <argument type="service" id="be_simple_rosetta.locator" />
+            <argument>%be_simple_rosetta.locales.source%</argument>
+            <argument>%be_simple_rosetta.locales.translations%</argument>
+        </service>
+
+        <service id="be_simple_rosetta.importer" class="%be_simple_rosetta.importer.class%">
+            <argument type="service" id="be_simple_rosetta.factory" />
+            <argument type="service" id="be_simple_rosetta.locator" />
+        </service>
+
+        <service id="be_simple_rosetta.scanner" class="%be_simple_rosetta.scanner.class%">
+            <argument type="service" id="be_simple_rosetta.factory" />
+            <argument type="service" id="be_simple_rosetta.locator" />
         </service>
 
     </services>

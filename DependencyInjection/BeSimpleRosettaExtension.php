@@ -97,5 +97,8 @@ class BeSimpleRosettaExtension extends Extension
         $container->setParameter('be_simple_rosetta.tasks.configs', array(
             Tasks::DEFAULTS => $config['workflow']['tasks'],
         ));
+
+        $container->setParameter('be_simple_rosetta.locales.source', $config['locales']['source']);
+        $container->setParameter('be_simple_rosetta.locales.translations', $config['locales']['translations']);
     }
 }
