@@ -57,6 +57,21 @@ class Configuration implements ConfigurationInterface
     private $defaultBackupDateFormat;
 
     /**
+     * @var string
+     */
+    private $defaultModelHelper;
+
+    /**
+     * @var int
+     */
+    private $defaultBatchLimit;
+
+    /**
+     * @var array
+     */
+    private $defaultTasks;
+
+    /**
      * Constructor.
      */
     public function __construct()
@@ -73,6 +88,9 @@ class Configuration implements ConfigurationInterface
         $this->defaultManageValue        = array('app', 'src');
         $this->defaultBackupDirectory    = 'backups';
         $this->defaultBackupDateFormat   = 'YmdHis';
+        $this->defaultModelHelper        = 'BeSimple\\RosettaBundle\\Entity\\Helper';
+        $this->defaultBatchLimit         = 50;
+        $this->defaultTasks              = array();
     }
 
     /**
@@ -90,6 +108,8 @@ class Configuration implements ConfigurationInterface
         $this->addImporterSection($rootNode);
         $this->addManageSection($rootNode);
         $this->addBackupSection($rootNode);
+        $this->addModelSection($rootNode);
+        $this->addWorkflowSection($rootNode);
 
         return $treeBuilder;
     }
@@ -282,6 +302,56 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('directory')->defaultValue($this->defaultBackupDirectory)->end()
                         ->scalarNode('date_format')->defaultValue($this->defaultBackupDateFormat)->end()
                         ->booleanNode('enabled')->defaultTrue()->end()
+                    ->end()
+                ->end()
+            ->end()
+        ;
+    }
+
+    /**
+     * @param ArrayNodeDefinition $rootNode
+     */
+    private function addModelSection(ArrayNodeDefinition $rootNode)
+    {
+        $rootNode
+            ->children()
+                ->arrayNode('model')
+                    ->addDefaultsIfNotSet()
+                    ->beforeNormalization()
+                        ->ifNull()->thenEmptyArray()
+                        ->ifTrue()->thenEmptyArray()
+                        ->ifString()->then(function($value) {
+                            return array('manager' => $value);
+                        })
+                    ->end()
+                    ->children()
+                        ->scalarNode('manager')->defaultNull()->end()
+                        ->booleanNode('helper')->defaultValue($this->defaultModelHelper)->end()
+                    ->end()
+                ->end()
+            ->end()
+        ;
+    }
+
+    /**
+     * @param ArrayNodeDefinition $rootNode
+     */
+    private function addWorkflowSection(ArrayNodeDefinition $rootNode)
+    {
+        $rootNode
+            ->children()
+                ->arrayNode('workflow')
+                    ->addDefaultsIfNotSet()
+                    ->beforeNormalization()
+                        ->ifNull()->thenEmptyArray()
+                        ->ifTrue()->thenEmptyArray()
+                    ->end()
+                    ->children()
+                        ->scalarNode('batch_limit')->defaultValue($this->defaultBatchLimit)->end()
+                        ->arrayNode('tasks')
+                            ->prototype('scalar')
+                            ->defaultValue($this->defaultTasks)
+                        ->end()
                     ->end()
                 ->end()
             ->end()

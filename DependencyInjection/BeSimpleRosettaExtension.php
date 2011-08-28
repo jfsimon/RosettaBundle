@@ -8,6 +8,7 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\Config\FileLocator;
 use BeSimple\RosettaBundle\Translation\ParametersGuesser\GlobParametersGuesser;
 use BeSimple\RosettaBundle\Translation\ParametersGuesser\RegexpParametersGuesser;
+use BeSimple\RosettaBundle\Rosetta\Workflow\Tasks;
 
 /**
  * @author: Jean-François Simon <contact@jfsimon.fr>
@@ -22,15 +23,26 @@ class BeSimpleRosettaExtension extends Extension
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $config = $this->processConfiguration(new Configuration(), $configs);
 
+        $this->setupModelServices($config, $container);
+        $loader->load('model.xml');
+
         $this->setupTranslationServices($config, $container);
         $loader->load('translation.xml');
 
         $this->setupRosettaServices($config, $container);
         $loader->load('rosetta.xml');
 
-        $loader->load('model.xml');
-
         // todo: manage the fact that services can be disabled (is this useful ?)
+    }
+
+    /**
+     * @param array            $config
+     * @param ContainerBuilder $container
+     */
+    private function setupModelServices(array $config, ContainerBuilder $container)
+    {
+        $container->setParameter('be_simple_rosetta.model.helper.class', $config['model']['helper']);
+        $container->setParameter('be_simple_rosetta.model.manager.name', $config['model']['manager']);
     }
 
     /**
@@ -80,5 +92,10 @@ class BeSimpleRosettaExtension extends Extension
 
         $container->setParameter('be_simple_rosetta.dumper.format', $config['dumper']['format']);
         $container->setParameter('be_simple_rosetta.dumper.backup', $config['dumper']['backup']);
+
+        $container->setParameter('be_simple_rosetta.processor.batch_limit', $config['workflow']['batch_limit']);
+        $container->setParameter('be_simple_rosetta.tasks.configs', array(
+            Tasks::DEFAULTS => $config['workflow']['tasks'],
+        ));
     }
 }
