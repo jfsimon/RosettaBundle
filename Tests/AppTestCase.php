@@ -11,7 +11,8 @@ use Doctrine\ORM\Tools\SchemaTool;
  */
 class AppTestCase extends TestCase
 {
-    static protected $kernel = null;
+    static protected $kernel      = null;
+    static protected $projectRoot = null;
 
     static protected function createKernel($config = 'minimalist', $debug = true)
     {
@@ -24,6 +25,8 @@ class AppTestCase extends TestCase
 
         static::$kernel = new AppKernel($tempDir, $configFile, 'test', $debug);
         static::$kernel->boot();
+
+        static::$projectRoot = realpath(static::$kernel->getRootDir().DIRECTORY_SEPARATOR.implode(DIRECTORY_SEPARATOR, array('..', '..', '..', '..')));
 
         return static::$kernel;
     }
