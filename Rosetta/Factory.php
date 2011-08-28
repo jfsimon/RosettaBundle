@@ -119,6 +119,16 @@ class Factory
     }
 
     /**
+     * Returns scanner aliases.
+     *
+     * @return array Scanner aliases
+     */
+    public function getScannerAliases()
+    {
+        return array_values($this->scanners);
+    }
+
+    /**
      * Returns parameters guesser service by alias.
      *
      * @param string $alias Parameters guesser alias
