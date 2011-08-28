@@ -55,11 +55,11 @@ class InputCollection implements \Countable
     /**
      * Merge an inputs stack.
      *
-     * @param Inputs $inputs An Inputs instance
+     * @param InputCollection $inputs An Inputs instance
      *
      * @return Inputs This instance
      */
-    public function merge(Inputs $inputs)
+    public function merge(InputCollection $inputs)
     {
         foreach ($inputs->all() as $input) {
             $this->add($input);
