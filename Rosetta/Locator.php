@@ -172,7 +172,7 @@ class Locator
         if (!is_array($this->processedPaths)) {
             $this->processedPaths = array();
 
-            foreach ($this->processedBundles as $bundle) {
+            foreach ($this->getProcessedBundles() as $bundle) {
                 $this->processedPaths[] = $this->getBundlePath($bundle);
             }
         }
@@ -189,7 +189,7 @@ class Locator
      */
     public function inScope($file) {
         foreach ($this->getProcessedPaths() as $path) {
-            if (0 === strstr($file, $path)) {
+            if (0 === strpos($file, $path)) {
                 return true;
             }
         }
@@ -207,7 +207,7 @@ class Locator
     public function guessBundleName($file)
     {
         foreach ($this->getBundlePaths() as $bundle => $path) {
-            if (0 === strstr($file, $path)) {
+            if (0 === strpos($file, $path)) {
                 return $bundle;
             }
         }
