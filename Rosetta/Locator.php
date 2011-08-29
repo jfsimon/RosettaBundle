@@ -67,7 +67,7 @@ class Locator
         $this->bundles = $bundles;
         $this->appDir  = (boolean) $appDir;
         $this->srcDir  = (boolean) $srcDir;
-        $this->srcPath = realpath($kernel->getRootDir().DIRECTORY_SEPARATOR.'..');
+        $this->srcPath = realpath($kernel->getRootDir().DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'src');
 
         // internal cache
         $this->bundlePaths       = null;
@@ -151,10 +151,8 @@ class Locator
     {
         $bundles = array();
 
-        foreach ($this->bundles as $bundle) {
-            $bundlePath = $this->getBundlePath($bundle);
-
-            if (0 !== strstr($bundlePath, $this->srcPath)) {
+        foreach ($this->getBundlePaths() as $bundle => $path) {
+            if (0 === strpos($path, $this->srcPath)) {
                 $bundles[] = $bundle;
             }
         }
