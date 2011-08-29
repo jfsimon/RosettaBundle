@@ -240,7 +240,7 @@ class Configuration implements ConfigurationInterface
                         ->ifNull()->then($setDefaults)
                         ->ifTrue()->then($setDefaults)
                         ->ifArray()->then(function ($values) {
-                            $manage = array();
+                            $manage = array('app_dir' => false, 'src_dir' => false);
                             foreach ($values as $value) {
                                 if ('app' === $value) {
                                     $manage['app_dir'] = true;
@@ -257,11 +257,11 @@ class Configuration implements ConfigurationInterface
                         })
                         ->ifString()->then(function($value) {
                             if ('app' === $value) {
-                                return array('app_dir' => true);
+                                return array('app_dir' => true, 'src_dir' => false);
                             } else if ('src' === $value) {
-                                return array('src_dir' => true);
+                                return array('app_dir' => false, 'src_dir' => true);
                             } else {
-                                return array('bundles' => $value);
+                                return array('app_dir' => false, 'src_dir' => false, 'bundles' => $value);
                             }
                         })
                     ->end()
@@ -273,8 +273,8 @@ class Configuration implements ConfigurationInterface
                             ->end()
                             ->prototype('scalar')->end()
                         ->end()
-                        ->booleanNode('app_dir')->defaultFalse()->end()
-                        ->booleanNode('src_dir')->defaultFalse()->end()
+                        ->booleanNode('app_dir')->defaultTrue()->end()
+                        ->booleanNode('src_dir')->defaultTrue()->end()
                     ->end()
                 ->end()
             ->end()
