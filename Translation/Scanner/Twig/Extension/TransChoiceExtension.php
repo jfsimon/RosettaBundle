@@ -7,8 +7,18 @@ use BeSimple\RosettaBundle\Translation\Scanner\Twig\TokenParser\TransChoiceToken
 /**
  * @author: Jean-François Simon <contact@jfsimon.fr>
  */
-class TransChoiceExtension extends TransExtension implements ExtensionInterface
+class TransChoiceExtension extends \Twig_Extension implements ExtensionInterface
 {
+    /**
+     * @var array
+     */
+    protected $messages;
+
+    /**
+     * @var TransTokenParser
+     */
+    protected $tokenParser;
+
     /**
      * Constructor.
      */
@@ -16,6 +26,14 @@ class TransChoiceExtension extends TransExtension implements ExtensionInterface
     {
         $this->messages    = array();
         $this->tokenParser = new TransChoiceTokenParser();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getMessages()
+    {
+        return array_merge($this->messages, $this->tokenParser->getMessages());
     }
 
     /**

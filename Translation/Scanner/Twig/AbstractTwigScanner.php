@@ -28,6 +28,7 @@ abstract class AbstractTwigScanner
     {
         $this->twig = $twig ?: new \Twig_Environment();
         $this->twig->setLoader(new \Twig_Loader_String());
+        $this->twig->disableStrictVariables();
 
         $this->extensions = array();
     }
