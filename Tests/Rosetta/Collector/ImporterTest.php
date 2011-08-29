@@ -18,7 +18,7 @@ class ImporterTest extends AppTestCase
             ->getContainer()
             ->get('be_simple_rosetta.importer')
             ->importBundle($bundle)
-            ->fetch()
+            ->fetchInputs()
         ;
 
         $found = false;
@@ -43,7 +43,7 @@ class ImporterTest extends AppTestCase
             ->getContainer()
             ->get('be_simple_rosetta.importer')
             ->importBundle($bundle, $domain)
-            ->fetch()
+            ->fetchInputs()
         ;
 
         $this->assertTrue($inputs->count() > 0);

@@ -59,7 +59,7 @@ abstract class AbstractCollector
      *
      * @return InputCollection An InputCollection instance
      */
-    public function fetch()
+    public function fetchInputs()
     {
         $inputs = $this->inputs;
         $this->inputs = new InputCollection();

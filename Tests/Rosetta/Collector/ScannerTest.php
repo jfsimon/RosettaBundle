@@ -18,7 +18,7 @@ class ScannerTest extends AppTestCase
             ->getContainer()
             ->get('be_simple_rosetta.scanner')
             ->scanBundle($bundle)
-            ->fetch()
+            ->fetchInputs()
         ;
 
         $found = false;
@@ -43,7 +43,7 @@ class ScannerTest extends AppTestCase
             ->getContainer()
             ->get('be_simple_rosetta.scanner')
             ->scanBundle($bundle, $domain)
-            ->fetch()
+            ->fetchInputs()
         ;
 
         $this->assertTrue($inputs->count() > 0);

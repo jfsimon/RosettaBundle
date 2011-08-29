@@ -11,6 +11,8 @@ use BeSimple\RosettaBundle\Rosetta\Workflow\InputCollection;
  */
 class Importer extends AbstractCollector
 {
+    private $files = array();
+
     /**
      * Imports all translation files from a bundle.
      *
@@ -51,17 +53,29 @@ class Importer extends AbstractCollector
         return $this;
     }
 
-        /**
+    /**
+     * Fetches imported files.
+     *
+     * @return array
+     */
+    public function fetchFiles()
+    {
+        $files = $this->files;
+        $this->files = array();
+
+        return $files;
+    }
+
+    /**
      * @param string $file   A filename
      * @param string $bundle A bundle name
      * @return InputCollection
      */
     private function collectInputs($file, $bundle)
     {
+        $this->files[] = $file;
         $inputs = new InputCollection();
         list($domain, $locale, $format) = explode('.', basename($file));
-
-
 
         foreach ($this->factory->getLoader($format)->load($file, $locale)->all() as $messages) {
             foreach ($messages as $text => $translation) {
