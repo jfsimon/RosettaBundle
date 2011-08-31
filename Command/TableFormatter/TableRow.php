@@ -5,7 +5,7 @@ namespace BeSimple\RosettaBundle\Command\TableFormatter;
 /**
  * @author: Jean-François Simon <contact@jfsimon.fr>
  */
-class Row extends AbstractRow implements RowInterface
+class TableRow extends AbstractTableRow implements TableRowInterface
 {
     /**
      * @var array
@@ -26,7 +26,7 @@ class Row extends AbstractRow implements RowInterface
     /**
      * {@inheritdoc}
      */
-    public function getLength(Column $column)
+    public function getLength(TableColumn $column)
     {
         return strlen($this->getValue($column->getKey()));
     }
@@ -34,13 +34,14 @@ class Row extends AbstractRow implements RowInterface
     /**
      * {@inheritdoc}
      */
-    public function render(Column $column)
+    public function render(TableColumn $column)
     {
         return $this->renderValue($column, $this->getValue($column->getKey()), $column->getStyle());
     }
 
     /**
-     * @param Column $column
+     * @param TableColumn $column
+     *
      * @return string
      */
     protected function getValue($key)

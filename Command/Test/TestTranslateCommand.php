@@ -7,9 +7,9 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use BeSimple\RosettaBundle\Command\TableFormatter\Formatter;
-use BeSimple\RosettaBundle\Command\TableFormatter\Column;
-use BeSimple\RosettaBundle\Command\TableFormatter\Row;
+use BeSimple\RosettaBundle\Command\TableFormatter\TableFormatter;
+use BeSimple\RosettaBundle\Command\TableFormatter\TableColumn;
+use BeSimple\RosettaBundle\Command\TableFormatter\TableRow;
 
 /**
  * @author: Jean-François Simon <contact@jfsimon.fr>
@@ -46,9 +46,11 @@ class TestTranslateCommand extends ContainerAwareCommand
         $from = $input->getOption('from')
             ?: $this->getContainer()->getParameter('be_simple_rosetta.locales.source');
 
-        $to   = $input->getOption('to')
+        $to = $input->getOption('to')
             ? explode(',', $input->getOption('to'))
             : $this->getContainer()->getParameter('be_simple_rosetta.locales.translations');
+
+        var_dump($to);
 
         return $this
             ->getContainer()
@@ -64,13 +66,13 @@ class TestTranslateCommand extends ContainerAwareCommand
      */
     protected function output(array $translations, OutputInterface $output)
     {
-        $formatter = Formatter::create($output)
-            ->addColumn(new Column('locale', 'comment'))
-            ->addColumn(new Column('translation', 'info'))
+        $formatter = TableFormatter::create($output)
+            ->addColumn(new TableColumn('locale', 'comment'))
+            ->addColumn(new TableColumn('translation', 'info'))
         ;
 
         foreach ($translations as $locale => $translation) {
-            $formatter->addRow(new Row(array(
+            $formatter->addRow(new TableRow(array(
                 'locale'      => $locale,
                 'translation' => $translation,
             )));

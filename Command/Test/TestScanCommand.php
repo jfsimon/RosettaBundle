@@ -8,9 +8,9 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
-use BeSimple\RosettaBundle\Command\TableFormatter\Formatter;
-use BeSimple\RosettaBundle\Command\TableFormatter\Column;
-use BeSimple\RosettaBundle\Command\TableFormatter\Row;
+use BeSimple\RosettaBundle\Command\TableFormatter\TableFormatter;
+use BeSimple\RosettaBundle\Command\TableFormatter\TableColumn;
+use BeSimple\RosettaBundle\Command\TableFormatter\TableRow;
 
 /**
  * @author: Jean-François Simon <contact@jfsimon.fr>
@@ -66,14 +66,14 @@ class TestScanCommand extends ContainerAwareCommand
     {
         $output->getFormatter()->setStyle('parameter', new OutputFormatterStyle('red', null, array('bold')));
 
-        $formatter = Formatter::create($output)
-            ->addColumn(new Column('domain', 'comment'))
-            ->addColumn(new Column('text', 'info'))
-            ->addColumn(new Column('parameters', 'comment'))
+        $formatter = TableFormatter::create($output)
+            ->addColumn(new TableColumn('domain', 'comment'))
+            ->addColumn(new TableColumn('text', 'info'))
+            ->addColumn(new TableColumn('parameters', 'comment'))
         ;
 
         foreach ($translations as $message) {
-            $row = new Row(array(
+            $row = new TableRow(array(
                 'domain'     => $message['domain'] ?: '--',
                 'text'       => $message['text'],
                 'parameters' => $message['parameters'] ? '['.implode(', ', $message['parameters']).']' : '--',

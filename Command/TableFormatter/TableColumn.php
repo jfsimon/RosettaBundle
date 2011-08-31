@@ -7,7 +7,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * @author: Jean-François Simon <contact@jfsimon.fr>
  */
-class Column
+class TableColumn
 {
     /**
      * @var string
@@ -44,9 +44,10 @@ class Column
 
     /**
      * @param RowInterface $row
-     * @return Column
+     *
+     * @return TableColumn
      */
-    public function scan(RowInterface $row)
+    public function scan(TableRowInterface $row)
     {
         $length = $row->getLength($this);
 
@@ -59,7 +60,8 @@ class Column
 
     /**
      * @param $style
-     * @return Column
+     *
+     * @return TableColumn
      */
     public function setStyle($style)
     {
@@ -86,7 +88,8 @@ class Column
 
     /**
      * @param string $label
-     * @return Column
+     *
+     * @return TableColumn
      */
     public function setLabel($label)
     {

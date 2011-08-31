@@ -9,10 +9,10 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Translation\MessageCatalogue;
-use BeSimple\RosettaBundle\Command\TableFormatter\Formatter;
-use BeSimple\RosettaBundle\Command\TableFormatter\Column;
-use BeSimple\RosettaBundle\Command\TableFormatter\Row;
-use BeSimple\RosettaBundle\Command\TableFormatter\Separator;
+use BeSimple\RosettaBundle\Command\TableFormatter\TableFormatter;
+use BeSimple\RosettaBundle\Command\TableFormatter\TableColumn;
+use BeSimple\RosettaBundle\Command\TableFormatter\TableRow;
+use BeSimple\RosettaBundle\Command\TableFormatter\TableSeparator;
 
 /**
  * @author: Jean-François Simon <contact@jfsimon.fr>
@@ -68,11 +68,11 @@ class TestLoadCommand extends ContainerAwareCommand
     {
         $output->getFormatter()->setStyle('parameter', new OutputFormatterStyle('red', null, array('bold')));
 
-        $formatter = Formatter::create($output)
-            ->addColumn(new Column('domain', 'comment'))
-            ->addColumn(new Column('text', 'info'))
-            ->addColumn(new Column('parameters', 'comment'))
-            ->addColumn(new Column('translation', 'info'))
+        $formatter = TableFormatter::create($output)
+            ->addColumn(new TableColumn('domain', 'comment'))
+            ->addColumn(new TableColumn('text', 'info'))
+            ->addColumn(new TableColumn('parameters', 'comment'))
+            ->addColumn(new TableColumn('translation', 'info'))
         ;
 
         $guesser = $this
@@ -84,10 +84,10 @@ class TestLoadCommand extends ContainerAwareCommand
         $first = true;
 
         foreach ($catalogue->all() as $domain => $messages) {
-            $first ? $first = false : $formatter->addRow(new Separator());
+            $first ? $first = false : $formatter->addRow(new TableSeparator());
 
             foreach ($messages as $text => $translation) {
-                $row = new Row(array(
+                $row = new TableRow(array(
                     'domain'      => $domain,
                     'text'        => $text,
                     'parameters'  => '--',

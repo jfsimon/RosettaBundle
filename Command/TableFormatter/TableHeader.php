@@ -5,12 +5,12 @@ namespace BeSimple\RosettaBundle\Command\TableFormatter;
 /**
  * @author: Jean-François Simon <contact@jfsimon.fr>
  */
-class Header extends AbstractRow implements RowInterface
+class TableHeader extends AbstractTableRow implements TableRowInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function getLength(Column $column)
+    public function getLength(TableColumn $column)
     {
         return strlen($this->getLabel($column));
     }
@@ -18,16 +18,17 @@ class Header extends AbstractRow implements RowInterface
     /**
      * {@inheritdoc}
      */
-    public function render(Column $column)
+    public function render(TableColumn $column)
     {
         return $this->renderValue($column, $this->getLabel($column), 'label');
     }
 
     /**
-     * @param Column $column
+     * @param TableColumn $column
+     *
      * @return string
      */
-    protected function getLabel(Column $column)
+    protected function getLabel(TableColumn $column)
     {
         return $column->getLabel() ?: ucfirst(str_replace(array('-', '_'), ' ', $column->getKey()));
     }

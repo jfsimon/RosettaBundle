@@ -5,7 +5,7 @@ namespace BeSimple\RosettaBundle\Command\TableFormatter;
 /**
  * @author: Jean-François Simon <contact@jfsimon.fr>
  */
-class AbstractRow
+class AbstractTableRow
 {
     /**
      * @var array
@@ -23,7 +23,7 @@ class AbstractRow
      */
     public function __construct(array $options = array(), array $highlights = array())
     {
-        $this->options    = array_merge(Formatter::$defaults, $options);
+        $this->options    = array_merge(TableFormatter::$defaults, $options);
         $this->highlights = $highlights;
     }
 
@@ -49,6 +49,7 @@ class AbstractRow
     /**
      * @param string $string
      * @param string $style
+     *
      * @return AbstractRow
      */
     public function highlight($string, $style = 'error', array $fields = null)
@@ -62,12 +63,13 @@ class AbstractRow
     }
 
     /**
-     * @param Column $column
+     * @param TableColumn $column
      * @param string $value
      * @param null $style
+     *
      * @return string
      */
-    protected function renderValue(Column $column, $value, $style = null)
+    protected function renderValue(TableColumn $column, $value, $style = null)
     {
         $value = $value ?: $this->options['null'];
 
@@ -79,6 +81,7 @@ class AbstractRow
 
     /**
      * @param $value string
+     *
      * @return string
      */
     protected function renderHighlights($value, $field, $oldStyle)

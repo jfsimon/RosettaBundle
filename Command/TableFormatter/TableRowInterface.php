@@ -5,17 +5,17 @@ namespace BeSimple\RosettaBundle\Command\TableFormatter;
 /**
  * @author: Jean-François Simon <contact@jfsimon.fr>
  */
-interface RowInterface
+interface TableRowInterface
 {
     /**
      * @return int
      */
-    function getLength(Column $column);
+    function getLength(TableColumn $column);
 
     /**
      * @param Column $column
      * @param string $null
      * @return string
      */
-    function render(Column $column);
+    function render(TableColumn $column);
 }

@@ -9,7 +9,7 @@ use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 /**
  * @author: Jean-François Simon <contact@jfsimon.fr>
  */
-class Formatter
+class TableFormatter
 {
     /**
      * @var OutputInterface
@@ -58,10 +58,10 @@ class Formatter
     }
 
     /**
-     * @static
      * @param OutputInterface $output
      * @param array $options
-     * @return Formatter
+     *
+     * @return TableFormatter
      */
     static public function create(OutputInterface $output, array $options = array())
     {
@@ -69,10 +69,11 @@ class Formatter
     }
 
     /**
-     * @param Column $column
-     * @return Formatter
+     * @param TableColumn $column
+     *
+     * @return TableFormatter
      */
-    public function addColumn(Column $column)
+    public function addColumn(TableColumn $column)
     {
         $this->columns[] = $column;
 
@@ -80,10 +81,11 @@ class Formatter
     }
 
     /**
-     * @param RowInterface $row
-     * @return Formatter
+     * @param TableRowInterface $row
+     *
+     * @return TableFormatter
      */
-    public function addRow(RowInterface $row)
+    public function addRow(TableRowInterface $row)
     {
         $row->setOptions($this->options);
         $this->rows[] = $row;
@@ -99,8 +101,8 @@ class Formatter
         $rows = $rows ?: $this->rows;
 
         if ($this->options['header']) {
-            array_unshift($rows, new Separator($this->options));
-            array_unshift($rows, new Header($this->options));
+            array_unshift($rows, new TableSeparator($this->options));
+            array_unshift($rows, new TableHeader($this->options));
         }
 
         foreach ($this->columns as $column) {
@@ -133,7 +135,8 @@ class Formatter
 
     /**
      * @param OutputFormatterInterface $formatter
-     * @return Formatter
+     *
+     * @return TableFormatter
      */
     protected function setupOutputFormatter(OutputFormatterInterface $formatter)
     {

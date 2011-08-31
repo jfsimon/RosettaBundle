@@ -5,12 +5,12 @@ namespace BeSimple\RosettaBundle\Command\TableFormatter;
 /**
  * @author: Jean-François Simon <contact@jfsimon.fr>
  */
-class Separator extends AbstractRow implements RowInterface
+class TableSeparator extends AbstractTableRow implements TableRowInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function getLength(Column $column)
+    public function getLength(TableColumn $column)
     {
         return 0;
     }
@@ -18,7 +18,7 @@ class Separator extends AbstractRow implements RowInterface
     /**
      * {@inheritdoc}
      */
-    public function render(Column $column)
+    public function render(TableColumn $column)
     {
         $times = ceil($column->getLength() / strlen($this->options['separator']));
 
