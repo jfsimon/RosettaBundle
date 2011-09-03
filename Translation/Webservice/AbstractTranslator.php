@@ -7,12 +7,17 @@ namespace BeSimple\RosettaBundle\Translation\Webservice;
  *
  * @author: Jean-François Simon <contact@jfsimon.fr>
  */
-abstract class AbstractTranslator
+abstract class AbstractTranslator implements TranslatorInterface
 {
     /**
      * @var array
      */
-    protected $options;
+    private $options;
+
+    /**
+     * @var string
+     */
+    protected $error;
 
     /**
      * Constructor.
@@ -22,42 +27,13 @@ abstract class AbstractTranslator
     public function __construct(array $options = array())
     {
         $this->options = $options;
+        $this->error   = null;
     }
 
     /**
-     * Returns the options.
-     *
-     * @return array An array of options
+     * {@inheritdoc}
      */
-    public function getOptions()
-    {
-        return $this->options;
-    }
-
-    /**
-     * Sets the options.
-     *
-     * @param array $options An array of options
-     *
-     * @return TranslatorInterface A TranslatorInterface instance
-     */
-    public function setOptions(array $options)
-    {
-        $this->options = $options;
-
-        return $this;
-    }
-
-    /**
-     * Translates a batch of texts.
-     *
-     * @param array       $texts      An array of texts to translate
-     * @param array       $toLocales  An array of translation locales
-     * @param string|null $fromLocale The source texts locale
-     *
-     * @return array An array of translations
-     */
-    public function translateBatch(array $texts, array $toLocales, $fromLocale = null)
+    public function translateBatch(array $texts, $fromLocale, array $toLocales)
     {
         $translations = array();
 
@@ -75,14 +51,42 @@ abstract class AbstractTranslator
     }
 
     /**
-     * Reads result of a GET request to given URL.
-     *
-     * @param string $url An URL
-     *
-     * @return string The response content
+     * {@inheritdoc}
      */
-    protected function sendRequest($url)
+    public function translate($text, $fromLocale, array $toLocales)
     {
-        return file_get_contents($url);
+        $translations = new Translations();
+
+        foreach ($toLocales as $toLocale) {
+            $request  = $this->buildRequest($text, $fromLocale, $toLocale);
+            $response = $request->getResponse(Request::DECODE_JSON);
+
+            if (is_array($response)) {
+                $response = $this->parseResponse($response);
+
+                if (is_null($response)) {
+                    $translations->setError($toLocale, $this->error);
+                } else {
+                    $translations->set($toLocale, $response);
+                }
+            } else {
+                $translations->setError($toLocale, $request->getLastError());
+            }
+        }
+
+        return $translations;
+    }
+
+    /**
+     * Returns an option value.
+     *
+     * @param string $key     Option key
+     * @param mixed  $default Default value
+     *
+     * @return mixed
+     */
+    public function getOption($key, $default = null)
+    {
+        return isset($this->options[$key]) ? $this->options[$key] : $default;
     }
 }

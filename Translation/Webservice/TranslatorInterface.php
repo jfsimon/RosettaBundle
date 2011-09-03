@@ -11,25 +11,23 @@ interface TranslatorInterface
 {
     /**
      * Translates a text.
-     * Returns an array indexed with translation locales.
      *
-     * @param array       $texts      A text to translate
-     * @param array       $toLocales  An array of translation locales
-     * @param string|null $fromLocale The source text locale
+     * @param array  $texts      A text to translate
+     * @param string $fromLocale The source text locale
+     * @param array  $toLocales  An array of translation locales
      *
-     * @return array An array of translations
+     * @return Response A Translations instance
      */
-    function translate($text, array $toLocales, $fromLocale = null);
+    function translate($text, $fromLocale, array $toLocales);
 
     /**
      * Translates a batch of texts.
-     * Returns an array of arrays indexed with translation locales.
      *
-     * @param array       $texts      An array of texts to translate
-     * @param array       $toLocales  An array of translation locales
-     * @param string|null $fromLocale The source texts locale
+     * @param array  $texts      An array of texts to translate
+     * @param string $fromLocale The source texts locale
+     * @param array  $toLocales  An array of translation locales
      *
-     * @return array An array of translations
+     * @return array An array of Translations instances
      */
-    function translateBatch(array $text, array $toLocales, $fromLocale = null);
+    function translateBatch(array $text, $fromLocale, array $toLocales);
 }
