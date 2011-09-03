@@ -17,6 +17,8 @@
         <parameter key="be_simple_rosetta.scanner.wrapper.class">BeSimple\RosettaBundle\Translation\Scanner\ScannerWrapper</parameter>
 
         <parameter key="be_simple_rosetta.translator.google.class">BeSimple\RosettaBundle\Translation\Webservice\GoogleTranslator</parameter>
+        <parameter key="be_simple_rosetta.translator.bing.class">BeSimple\RosettaBundle\Translation\Webservice\BingTranslator</parameter>
+        <parameter key="be_simple_rosetta.translator.gengo.class">BeSimple\RosettaBundle\Translation\Webservice\GengoTranslator</parameter>
 
         <parameter key="be_simple_rosetta.parameters_guesser.regexp.class">BeSimple\RosettaBundle\Translation\ParametersGuesser\RegexpParametersGuesser</parameter>
         <parameter key="be_simple_rosetta.parameters_guesser.glob.class">BeSimple\RosettaBundle\Translation\ParametersGuesser\GlobParametersGuesser</parameter>
@@ -28,23 +30,23 @@
         <!-- dumpers -->
 
         <service id="be_simple_rosetta.dumper.yml" class="%be_simple_rosetta.dumper.yml.class%">
-            <argument type="service" id="be_simple_rosetta.model.helper" />
             <tag name="be_simple_rosetta.dumper" alias="yml" />
+            <argument type="service" id="be_simple_rosetta.model.helper" />
         </service>
 
         <service id="be_simple_rosetta.dumper.xliff" class="%be_simple_rosetta.dumper.xliff.class%">
-            <argument type="service" id="be_simple_rosetta.model.helper" />
             <tag name="be_simple_rosetta.dumper" alias="xliff" />
+            <argument type="service" id="be_simple_rosetta.model.helper" />
         </service>
 
         <service id="be_simple_rosetta.dumper.php" class="%be_simple_rosetta.dumper.php.class%">
-            <argument type="service" id="be_simple_rosetta.model.helper" />
             <tag name="be_simple_rosetta.dumper" alias="php" />
+            <argument type="service" id="be_simple_rosetta.model.helper" />
         </service>
 
         <service id="be_simple_rosetta.dumper.csv" class="%be_simple_rosetta.dumper.csv.class%">
-            <argument type="service" id="be_simple_rosetta.model.helper" />
             <tag name="be_simple_rosetta.dumper" alias="csv" />
+            <argument type="service" id="be_simple_rosetta.model.helper" />
         </service>
 
         <!-- scanners -->
@@ -81,7 +83,17 @@
 
         <service id="be_simple_rosetta.translator.google" class="%be_simple_rosetta.translator.google.class%">
             <tag name="be_simple_rosetta.translator" alias="google" />
-            <argument>%be_simple_rosetta.translator.options%</argument>
+            <argument>%be_simple_rosetta.translator.google.options%</argument>
+        </service>
+
+        <service id="be_simple_rosetta.translator.bing" class="%be_simple_rosetta.translator.bing.class%">
+            <tag name="be_simple_rosetta.translator" alias="bing" />
+            <argument>%be_simple_rosetta.translator.bing.options%</argument>
+        </service>
+
+        <service id="be_simple_rosetta.translator.gengo" class="%be_simple_rosetta.translator.gengo.class%">
+            <tag name="be_simple_rosetta.translator" alias="gengo" />
+            <argument>%be_simple_rosetta.translator.gengo.options%</argument>
         </service>
 
         <!-- parameters guessers -->

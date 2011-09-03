@@ -66,10 +66,15 @@ class BeSimpleRosettaExtension extends Extension
             }
         }
 
+        $enabledTranslators = array();
+        foreach ($config['translator'] as $id => $options) {
+            $enabledTranslators[] = $id;
+            $container->setParameter('be_simple_rosetta.translator.'.$id.'.options', $options);
+        }
+        $container->setParameter('be_simple_rosetta.translator.enabled', $enabledTranslators);
+
         $container->setParameter('be_simple_rosetta.parameters_guesser.regexps', $parametersRegexps);
         $container->setParameter('be_simple_rosetta.parameters_guesser.globs', $parametersGlobs);
-
-        $container->setParameter('be_simple_rosetta.translator.options', $config['translator']['options']);
     }
 
     /**
@@ -78,9 +83,11 @@ class BeSimpleRosettaExtension extends Extension
      */
     private function setupRosettaServices(array $config, ContainerBuilder $container)
     {
+        $enabledTranslators = array_keys($config['translator']);
+        $defaultTranslatorAdapter = count($enabledTranslators) ? $enabledTranslators[0] : null;
         $container->setParameter('be_simple_rosetta.factory.defaults', array(
             'dumper'     => $config['dumper']['format'],
-            'translator' => $config['translator']['adapter'],
+            'translator' => $defaultTranslatorAdapter,
         ));
 
         $container->setParameter('be_simple_rosetta.locator.bundles', $config['manage']['bundles']);
@@ -95,10 +102,16 @@ class BeSimpleRosettaExtension extends Extension
 
         $container->setParameter('be_simple_rosetta.processor.batch_limit', $config['workflow']['batch_limit']);
         $container->setParameter('be_simple_rosetta.tasks.configs', array(
-            Tasks::DEFAULTS => $config['workflow']['tasks'],
+            Tasks::DEFAULTS  => $config['workflow']['tasks'],
+            Tasks::SCANNER   => $config['workflow']['tasks'],
+            Tasks::IMPORTER  => $config['importer']['tasks'] ?: $config['workflow']['tasks'],
+//            Tasks::COLLECTOR => $config['collector']['tasks'] ?: $config['workflow']['tasks'],
         ));
 
         $container->setParameter('be_simple_rosetta.locales.source', $config['locales']['source']);
         $container->setParameter('be_simple_rosetta.locales.translations', $config['locales']['translations']);
+
+        $container->setParameter('be_simple_rosetta.task.translate.translator', $defaultTranslatorAdapter);
+        $container->setParameter('be_simple_rosetta.task.select.min_rating', $config['workflow']['min_rating']);
     }
 }

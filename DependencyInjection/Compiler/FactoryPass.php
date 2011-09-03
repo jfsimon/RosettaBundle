@@ -19,11 +19,13 @@ class FactoryPass implements CompilerPassInterface
             return;
         }
 
+        $translators = $container->getParameter('be_simple_rosetta.translator.enabled');
+
         $container
             ->findDefinition('be_simple_rosetta.factory')
             ->replaceArgument(1, $this->findAliases($container, 'translation.loader'))
             ->replaceArgument(2, $this->findAliases($container, 'be_simple_rosetta.dumper'))
-            ->replaceArgument(3, $this->findAliases($container, 'be_simple_rosetta.translator'))
+            ->replaceArgument(3, $this->findAliases($container, 'be_simple_rosetta.translator', $translators))
             ->replaceArgument(4, $this->findAliases($container, 'be_simple_rosetta.scanner'))
             ->replaceArgument(5, $this->findAliases($container, 'be_simple_rosetta.parameters_guesser'))
         ;
@@ -34,12 +36,16 @@ class FactoryPass implements CompilerPassInterface
      * @param string $tag
      * @return array
      */
-    protected function findAliases(ContainerBuilder $container, $tag)
+    protected function findAliases(ContainerBuilder $container, $tag, array $use = null)
     {
         $aliases = array();
 
         foreach ($container->findTaggedServiceIds($tag) as $id => $attributes) {
-            $aliases[$id] = $attributes[0]['alias'];
+            $alias = $attributes[0]['alias'];
+
+            if (is_null($use) || in_array($alias, $use)) {
+                $aliases[$id] = $alias;
+            }
         }
 
         return $aliases;

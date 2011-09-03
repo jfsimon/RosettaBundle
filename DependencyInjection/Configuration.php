@@ -67,6 +67,11 @@ class Configuration implements ConfigurationInterface
     private $defaultBatchLimit;
 
     /**
+     * @var int
+     */
+    private $defaultMinRating;
+
+    /**
      * @var array
      */
     private $defaultTasks;
@@ -90,7 +95,8 @@ class Configuration implements ConfigurationInterface
         $this->defaultBackupDateFormat   = 'YmdHis';
         $this->defaultModelHelper        = 'BeSimple\\RosettaBundle\\Entity\\Helper';
         $this->defaultBatchLimit         = 50;
-        $this->defaultTasks              = array();
+        $this->defaultMinRating          = 3;
+        $this->defaultTasks              = array('translate', 'select', 'dump');
     }
 
     /**
@@ -123,23 +129,17 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->arrayNode('translator')
-                    ->addDefaultsIfNotSet()
-                    ->beforeNormalization()
-                        ->ifNull()->thenEmptyArray()
-                        ->ifTrue()->thenEmptyArray()
-                        ->ifString()->then(function($value) {
-                            return 'disabled' === $value
-                                ? array('enabled' => false)
-                                : array('adapter' => $value);
-                        })
-                    ->end()
-                    ->children()
-                        ->scalarNode('adapter')->defaultValue($this->defaultTranslator)->end()
-                        ->arrayNode('options')
-                            ->defaultValue(array())
-                            ->prototype('scalar')->end()
+                    ->useAttributeAsKey('key')
+                    ->prototype('array')
+                        ->useAttributeAsKey('key')
+                        ->beforeNormalization()
+                            ->ifNull()->thenEmptyArray()
+                            ->ifTrue()->thenEmptyArray()
+                            ->ifString()->then(function ($value) {
+                                return array('api_key' => $value);
+                            })
                         ->end()
-                        ->booleanNode('enabled')->defaultTrue()->end()
+                        ->prototype('scalar')->end()
                     ->end()
                 ->end()
             ->end()
@@ -208,6 +208,10 @@ class Configuration implements ConfigurationInterface
                             ->end()
                             ->prototype('scalar')->end()
                         ->end()
+                        ->arrayNode('tasks')
+                            ->defaultNull()
+                            ->prototype('scalar')->end()
+                        ->end()
                         ->scalarNode('then')
                             ->validate()
                                 ->ifNotInArray($this->availableImporterActions)
@@ -237,8 +241,6 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('manage')
                     ->addDefaultsIfNotSet()
                     ->beforeNormalization()
-                        ->ifNull()->then($setDefaults)
-                        ->ifTrue()->then($setDefaults)
                         ->ifArray()->then(function ($values) {
                             $manage = array('app_dir' => false, 'src_dir' => false);
                             foreach ($values as $value) {
@@ -255,6 +257,10 @@ class Configuration implements ConfigurationInterface
                             }
                             return $manage;
                         })
+                    ->end()
+                    ->beforeNormalization()
+                        ->ifNull()->then($setDefaults)
+                        ->ifTrue()->then($setDefaults)
                         ->ifString()->then(function($value) {
                             if ('app' === $value) {
                                 return array('app_dir' => true, 'src_dir' => false);
@@ -349,9 +355,10 @@ class Configuration implements ConfigurationInterface
                     ->end()
                     ->children()
                         ->scalarNode('batch_limit')->defaultValue($this->defaultBatchLimit)->end()
+                        ->scalarNode('min_rating')->defaultValue($this->defaultMinRating)->end()
                         ->arrayNode('tasks')
-                            ->prototype('scalar')
                             ->defaultValue($this->defaultTasks)
+                            ->prototype('scalar')
                         ->end()
                     ->end()
                 ->end()
