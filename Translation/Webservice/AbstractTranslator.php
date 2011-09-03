@@ -89,4 +89,21 @@ abstract class AbstractTranslator implements TranslatorInterface
     {
         return isset($this->options[$key]) ? $this->options[$key] : $default;
     }
+
+    /**
+     * @throws \InvalidArgumentException
+     *
+     * @param string $text
+     * @param string $fromLocale
+     * @param string $toLocale
+     * @return Request
+     */
+    abstract protected function buildRequest($text, $fromLocale, $toLocale);
+
+    /**
+     * @param array $response
+     *
+     * @return string|null
+     */
+    abstract protected function parseResponse(array $response);
 }

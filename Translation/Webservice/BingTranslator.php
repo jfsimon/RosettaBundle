@@ -3,20 +3,14 @@
 namespace BeSimple\RosettaBundle\Translation\Webservice;
 
 /**
- * Google translate webservice implementation.
- * Will sadly be unavailable from december 2011.
+ * Bing translation webservice implementation (http://www.microsofttranslator.com/).
  *
  * @author: Jean-François Simon <contact@jfsimon.fr>
  */
 class BingTranslator extends AbstractTranslator implements TranslatorInterface
 {
     /**
-     * @throws \InvalidArgumentException
-     *
-     * @param string $text
-     * @param string $fromLocale
-     * @param string $toLocale
-     * @return Request
+     * {@inheritdoc}
      */
     protected function buildRequest($text, $fromLocale, $toLocale)
     {
@@ -41,9 +35,7 @@ class BingTranslator extends AbstractTranslator implements TranslatorInterface
     }
 
     /**
-     * @param array $response
-     *
-     * @return string|null
+     * {@inheritdoc}
      */
     protected function parseResponse(array $response)
     {
