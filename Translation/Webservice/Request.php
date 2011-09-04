@@ -73,14 +73,16 @@ class Request
      */
     public function getResponse($decode = self::DECODE_NONE)
     {
+        $query = http_build_query($this->parameters);
+
         $url = $this->method === self::METHOD_GET
-            ? $this->url.'?'.$this->getQueryString()
+            ? $this->url.'?'.$query
             : $this->url;
 
         $http = array(
             'method'  => $this->method,
             'header'  => implode("\r\n", $this->headers),
-            'content' => $this->method === self::METHOD_POST ? $this->getQueryString() : null,
+            'content' => $this->method === self::METHOD_POST ? $query : null,
         );
 
         $context  = stream_context_create(array('http' => $http));
@@ -206,17 +208,4 @@ class Request
 
         return $this;
     }
-
-
-    private function getQueryString()
-    {
-        $query = array();
-
-        foreach ($this->parameters as $key => $value) {
-            $query[] = $key.'='.$value;
-        }
-
-        return implode('&', $query);
-    }
-
 }
