@@ -7,10 +7,10 @@ namespace BeSimple\RosettaBundle\Translation\Webservice;
  */
 class Request
 {
-    const METHOD_GET  = 'get';
-    const METHOD_POST = 'post';
+    const METHOD_GET  = 'GET';
+    const METHOD_POST = 'POST';
 
-    const DECODE_JSON = 'json';
+    const DECODE_JSON = 'JSON';
     const DECODE_NONE = null;
 
     /**
@@ -73,8 +73,18 @@ class Request
      */
     public function getResponse($decode = self::DECODE_NONE)
     {
-        $handler  = $this->build();
-        $response = $this->send($handler);
+        $url = $this->method === self::METHOD_GET
+            ? $this->url.'?'.$this->getQueryString()
+            : $this->url;
+
+        $http = array(
+            'method'  => $this->method,
+            'header'  => implode("\r\n", $this->headers),
+            'content' => $this->method === self::METHOD_POST ? $this->getQueryString() : null,
+        );
+
+        $context  = stream_context_create(array('http' => $http));
+        $response = @file_get_contents($url, 0, $context);
 
         if ($response === false) {
             return null;
@@ -197,59 +207,16 @@ class Request
         return $this;
     }
 
-    /**
-     * @return \resource
-     */
-    private function build()
+
+    private function getQueryString()
     {
-        $url = $this->method === self::METHOD_GET
-            ? $this->buildQuery()
-            : $this->url;
+        $query = array();
 
-        $handler = curl_init($url);
-        curl_setopt($handler, CURLOPT_RETURNTRANSFER, true);
-
-        if (count($this->headers)) {
-            curl_setopt($handler, CURLOPT_HTTPHEADER, $this->headers);
-        }
-
-        if ($this->method === self::METHOD_POST) {
-            curl_setopt($handler, CURLOPT_POST, true);
-            curl_setopt($handler, CURLOPT_POSTFIELDS, $this->parameters);
-        }
-
-        return $handler;
-    }
-
-    private function buildQuery()
-    {
-        $query = strpos($this->url, '?') === false
-            ? $this->url.'?'
-            : $this->url.'&';
-
-        $parameters = array();
         foreach ($this->parameters as $key => $value) {
-            $parameters[] = urlencode($key).'='.urlencode($value);
+            $query[] = $key.'='.$value;
         }
 
-        return $query.implode('&', $parameters);
+        return implode('&', $query);
     }
 
-    /**
-     * @param \resource $handler
-     *
-     * @return string|false
-     */
-    private function send($handler)
-    {
-        $response = curl_exec($handler);
-
-        $this->error = $response === false
-            ? curl_error($handler)
-            : null;
-
-        curl_close($handler);
-
-        return $response;
-    }
 }

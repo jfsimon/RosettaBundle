@@ -27,6 +27,7 @@ class GengoTranslator extends AbstractTranslator implements TranslatorInterface
 
         $request = Request::post('http://api.mygengo.com/v1/translate/job')
             ->addHeader('Accept: application/json')
+            ->addHeader('Content-Type: application/x-www-form-urlencoded')
         ;
 
         if ($apiKey = $this->getOption('api_key')) {
