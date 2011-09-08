@@ -12,15 +12,14 @@ class MessageManager extends AbstractManager
     /**
      * Creates a message.
      *
-     * @param Group  $group     A Group instance
      * @param string $text      A text
      * @param array $parameters An array of parameters
      *
      * @return Message A Message instance
      */
-    public function create(Group $group, $text, array $parameters = array())
+    public function create($text, array $parameters = array())
     {
-        $message = new Message($group, $text, $parameters);
+        $message = new Message($text, $parameters);
         $this->manage($message);
 
         return $message;

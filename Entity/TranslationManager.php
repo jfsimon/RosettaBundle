@@ -12,15 +12,14 @@ class TranslationManager extends AbstractManager
     /**
      * Creates a translation.
      *
-     * @param Message $message A Message instance
      * @param string  $locale  A locale
      * @param string  $text    A text
      *
      * @return Translation A Translation instance
      */
-    public function create(Message $message, $locale, $text)
+    public function create($locale, $text)
     {
-        $translation = new Translation($message, $locale, $text);
+        $translation = new Translation($locale, $text);
         $this->manage($translation);
 
         return $translation;

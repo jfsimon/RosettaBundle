@@ -41,11 +41,11 @@ class Translation extends AbstractEntity
      * @param string|null $locale
      * @param string|null $text
      */
-    public function __construct(Message $message, $locale = null, $text = null)
+    public function __construct($locale = null, $text = null)
     {
         $this->createdAt  = new \DateTime();
         $this->updatedAt  = new \DateTime();
-        $this->message    = $message;
+        $this->message    = null;
         $this->locale     = $locale;
         $this->text       = $text;
         $this->rating     = 0;

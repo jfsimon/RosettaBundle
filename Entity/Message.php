@@ -51,11 +51,11 @@ class Message extends AbstractEntity
      *
      * @param array $parameters
      */
-    public function __construct(Group $group = null, $text = null, array $parameters = array())
+    public function __construct($text = null, array $parameters = array())
     {
         $this->createdAt = new \DateTime();
         $this->updatedAt = new \DateTime();
-        $this->group     = $group;
+        $this->group     = null;
 
         if (!is_null($text)) {
             $this->setText($text);
