@@ -2,7 +2,7 @@
 
 namespace BeSimple\RosettaBundle\Translation\Dumper;
 
-use BeSimple\RosettaBundle\Entity\Helper;
+use BeSimple\RosettaBundle\Entity\Helper\HelperInterface;
 
 /**
  * @author: Jean-François Simon <contact@jfsimon.fr>
@@ -17,9 +17,9 @@ abstract class AbstractDumper
     /**
      * Constructor.
      *
-     * @param MessageHelper $helper A MessageHelper instance
+     * @param HelperInterface $helper A HelperInterface instance
      */
-    public function __construct(Helper $helper)
+    public function __construct(HelperInterface $helper)
     {
         $this->helper = $helper;
     }

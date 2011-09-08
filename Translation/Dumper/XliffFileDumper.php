@@ -2,7 +2,7 @@
 
 namespace BeSimple\RosettaBundle\Translation\Dumper;
 
-use BeSimple\RosettaBundle\Entity\Helper;
+use BeSimple\RosettaBundle\Entity\Helper\HelperInterface;
 
 /**
  * @author: Jean-François Simon <contact@jfsimon.fr>
@@ -17,10 +17,10 @@ class XliffFileDumper extends AbstractFileDumper implements DumperInterface
     /**
      * Constructor.
      *
-     * @param MessageHelper $helper       A MessageHelper instance
-     * @param string|null   $sourceLocale Source messages locale
+     * @param HelperInterface $helper       A HelperInterface instance
+     * @param string|null     $sourceLocale Source messages locale
      */
-    public function __construct(Helper $helper, $sourceLocale = null)
+    public function __construct(HelperInterface $helper, $sourceLocale = null)
     {
         parent::__construct($helper);
         $this->sourceLocale = $sourceLocale;

@@ -2,6 +2,7 @@
 
 namespace BeSimple\RosettaBundle\Entity;
 
+use BeSimple\RosettaBundle\Entity\Helper\HelperInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**

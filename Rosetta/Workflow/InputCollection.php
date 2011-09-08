@@ -2,8 +2,6 @@
 
 namespace BeSimple\RosettaBundle\Rosetta\Workflow;
 
-use BeSimple\RosettaBundle\Entity\HelperInterface;
-
 /**
  * @author: Jean-François Simon <contact@jfsimon.fr>
  */

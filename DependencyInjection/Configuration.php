@@ -93,7 +93,7 @@ class Configuration implements ConfigurationInterface
         $this->defaultManageValue        = array('app', 'src');
         $this->defaultBackupDirectory    = 'backups';
         $this->defaultBackupDateFormat   = 'YmdHis';
-        $this->defaultModelHelper        = 'BeSimple\\RosettaBundle\\Entity\\Helper';
+        $this->defaultModelHelper        = 'BeSimple\\RosettaBundle\\Entity\\Helper\\Helper';
         $this->defaultBatchLimit         = 50;
         $this->defaultMinRating          = 0;
         $this->defaultTasks              = array('translate', 'select', 'dump');

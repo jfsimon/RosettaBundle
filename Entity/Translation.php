@@ -2,6 +2,8 @@
 
 namespace BeSimple\RosettaBundle\Entity;
 
+use BeSimple\RosettaBundle\Entity\Helper\HelperInterface;
+
 /**
  * @author: Jean-François Simon <contact@jfsimon.fr>
  */

@@ -1,6 +1,6 @@
 <?php
 
-namespace BeSimple\RosettaBundle\Entity;
+namespace BeSimple\RosettaBundle\Entity\Helper;
 
 /**
  * Helper class for message texts.

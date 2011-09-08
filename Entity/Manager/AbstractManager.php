@@ -2,7 +2,7 @@
 
 namespace BeSimple\RosettaBundle\Entity\Manager;
 
-use BeSimple\RosettaBundle\Entity\HelperInterface;
+use BeSimple\RosettaBundle\Entity\Helper\HelperInterface;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
