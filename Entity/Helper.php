@@ -31,8 +31,7 @@ class Helper implements HelperInterface
     {
         $this->hasher = function($text) {
             // sha1 + md5 to avoid collisions
-            // raw encoded: 20 + 16 chars only
-            return sha1($text, true).md5($text, true);
+            return sha1($text).md5($text);
         };
 
         $this->keyGuesser = function($text) {

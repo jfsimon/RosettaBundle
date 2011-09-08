@@ -7,7 +7,7 @@
     <entity name="BeSimple\RosettaBundle\Entity\Message" table="be_simple_rosetta_message">
 
         <field name="text"       column="text"       type="text"    />
-        <field name="hash"       column="hash"       type="string"  length="63" />
+        <field name="hash"       column="hash"       type="string"  length="127" />
         <field name="isChoice"   column="is_choice"  type="boolean" />
         <field name="isKey"      column="is_key"     type="boolean" />
         <field name="parameters" column="parameters" type="array"   />

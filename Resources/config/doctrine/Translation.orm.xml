@@ -8,7 +8,7 @@
 
         <field name="locale"     column="locale"      type="string"  length="7"  />
         <field name="text"       column="text"        type="text"    />
-        <field name="hash"       column="hash"        type="string"  length="63" />
+        <field name="hash"       column="hash"        type="string"  length="127" />
         <field name="rating"     column="rating"      type="integer" />
         <field name="isSelected" column="is_selected" type="boolean" />
 
