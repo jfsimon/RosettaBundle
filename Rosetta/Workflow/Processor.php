@@ -2,9 +2,9 @@
 
 namespace BeSimple\RosettaBundle\Rosetta\Workflow;
 
-use BeSimple\RosettaBundle\Entity\GroupManager;
-use BeSimple\RosettaBundle\Entity\MessageManager;
-use BeSimple\RosettaBundle\Entity\TranslationManager;
+use BeSimple\RosettaBundle\Entity\Manager\GroupManager;
+use BeSimple\RosettaBundle\Entity\Manager\MessageManager;
+use BeSimple\RosettaBundle\Entity\Manager\TranslationManager;
 use BeSimple\RosettaBundle\Entity\GroupCollection;
 use BeSimple\RosettaBundle\Rosetta\Task\TaskInterface;
 
@@ -130,7 +130,7 @@ class Processor
         $messages = array();
 
         foreach ($inputs->all() as $input) {
-            $messages[] = $this->manage($input, $tasks->needTranslations());
+            $messages[] = $this->manage($input);
         }
 
         foreach ($tasks->actives() as $name => $task) {
@@ -174,7 +174,7 @@ class Processor
      *
      * @return Message
      */
-    private function manage(Input $input, $withTranslations = false)
+    private function manage(Input $input)
     {
         $dontSearchMessage      = false;
         $dontSearchTranslations = false;
@@ -190,8 +190,9 @@ class Processor
             $this->groupsCache->add($group);
         }
 
-        if ($dontSearchMessage || !$message = $this->messageManager->findOneByGroupAndText($group, $input->getText(), $withTranslations)) {
-            $message = $this->messageManager->create($group, $input->getText(), $input->getParameters())->setIsChoice($input->getIsChoice());
+        if ($dontSearchMessage || !$message = $this->messageManager->findOneByGroupAndText($group, $input->getText(), true)) {
+            $message = $this->messageManager->create($input->getText(), $input->getParameters())->setIsChoice($input->getIsChoice());
+            $message->setGroup($group);
 
             $dontSearchTranslations = true;
         }
@@ -199,7 +200,8 @@ class Processor
         foreach ($input->getTranslations() as $locale => $texts) {
             foreach ($texts as $text) {
                 if ($dontSearchTranslations || !$translation = $this->translationManager->findOneByMessageLocaleAndText($message, $locale, $text)) {
-                    $translation = $this->translationManager->create($message, $locale, $text);
+                    $translation = $this->translationManager->create($locale, $text);
+                    $translation->setMessage($message);
 
                     $message->getTranslations()->add($translation);
                 }

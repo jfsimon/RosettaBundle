@@ -30,11 +30,6 @@ class Tasks
     private $names;
 
     /**
-     * @var bool
-     */
-    private $trans;
-
-    /**
      * Constructor.
      *
      * @param array $configs Tasks configuration
@@ -44,7 +39,6 @@ class Tasks
         $this->configs = $configs;
         $this->tasks   = array();
         $this->names   = array();
-        $this->trans   = false;
 
         $this->configure(self::DEFAULTS);
     }
@@ -84,17 +78,12 @@ class Tasks
     public function activate(array $names)
     {
         $this->names = array();
-        $this->trans = false;
 
         foreach ($names as $name) {
             $name = (string) $name;
 
             if (isset($this->tasks[$name])) {
                 $this->names[] = $name;
-            }
-
-            if ($this->tasks[$name]->needTranslations()) {
-                $this->trans = true;
             }
         }
 
@@ -150,15 +139,5 @@ class Tasks
         $tasks = clone $this;
 
         return $tasks->configure($config);
-    }
-
-    /**
-     * Returns true if an active task needs translations
-     *
-     * @return bool
-     */
-    public function needTranslations()
-    {
-        return $this->trans;
     }
 }

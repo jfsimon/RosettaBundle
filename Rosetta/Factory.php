@@ -107,6 +107,16 @@ class Factory
     }
 
     /**
+     * Returns translator aliases.
+     *
+     * @return array Translator aliases
+     */
+    public function getTranslatorAliases()
+    {
+        return array_values($this->translators);
+    }
+
+    /**
      * Returns scanner service by alias.
      *
      * @param string|null $alias Scanner alias

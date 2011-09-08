@@ -2,8 +2,8 @@
 
 namespace BeSimple\RosettaBundle\Rosetta;
 
-use BeSimple\RosettaBundle\Model\Message;
-use BeSimple\RosettaBundle\Model\Translation;
+use BeSimple\RosettaBundle\Entity\Message;
+use BeSimple\RosettaBundle\Entity\Translation;
 
 /**
  * @author: Jean-François Simon <contact@jfsimon.fr>
