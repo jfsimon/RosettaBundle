@@ -1,6 +1,9 @@
 <?php
 
-namespace BeSimple\RosettaBundle\Entity;
+namespace BeSimple\RosettaBundle\Entity\Manager;
+
+use BeSimple\RosettaBundle\Entity\Message;
+use BeSimple\RosettaBundle\Entity\Group;
 
 /**
  * @author: Jean-François Simon <contact@jfsimon.fr>

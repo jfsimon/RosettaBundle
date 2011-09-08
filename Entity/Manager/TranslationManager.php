@@ -1,6 +1,9 @@
 <?php
 
-namespace BeSimple\RosettaBundle\Entity;
+namespace BeSimple\RosettaBundle\Entity\Manager;
+
+use BeSimple\RosettaBundle\Entity\Translation;
+use BeSimple\RosettaBundle\Entity\Message;
 
 /**
  * @author: Jean-François Simon <contact@jfsimon.fr>

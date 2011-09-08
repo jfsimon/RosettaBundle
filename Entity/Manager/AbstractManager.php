@@ -1,6 +1,8 @@
 <?php
 
-namespace BeSimple\RosettaBundle\Entity;
+namespace BeSimple\RosettaBundle\Entity\Manager;
+
+use BeSimple\RosettaBundle\Entity\HelperInterface;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
