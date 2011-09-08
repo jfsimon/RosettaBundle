@@ -75,7 +75,7 @@ class Request
     {
         $query = http_build_query($this->parameters);
 
-        $url = $this->method === self::METHOD_GET
+        $url = $this->method === self::METHOD_GET && strlen($query) > 0
             ? $this->url.'?'.$query
             : $this->url;
 

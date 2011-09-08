@@ -62,7 +62,11 @@ abstract class AbstractTranslator implements TranslatorInterface
             $response = $request->getResponse(Request::DECODE_JSON);
 
             if (is_array($response)) {
-                $response = $this->parseResponse($response);
+                try {
+                    $response = $this->parseResponse($response);
+                } catch(\Exception $e) {
+                    $translations->setError($toLocale, 'Unexpected response: '.json_encode($response));
+                }
 
                 if (is_null($response)) {
                     $translations->setError($toLocale, $this->error);
