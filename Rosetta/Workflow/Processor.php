@@ -192,19 +192,18 @@ class Processor
 
         if ($dontSearchMessage || !$message = $this->messageManager->findOneByGroupAndText($group, $input->getText(), true)) {
             $message = $this->messageManager->create($input->getText(), $input->getParameters())->setIsChoice($input->getIsChoice());
-            $message->setGroup($group);
-
             $dontSearchTranslations = true;
         }
+
+        $group->addMessage($message);
 
         foreach ($input->getTranslations() as $locale => $texts) {
             foreach ($texts as $text) {
                 if ($dontSearchTranslations || !$translation = $this->translationManager->findOneByMessageLocaleAndText($message, $locale, $text)) {
                     $translation = $this->translationManager->create($locale, $text);
-                    $translation->setMessage($message);
-
-                    $message->getTranslations()->add($translation);
                 }
+
+                $message->addTranslation($translation);
             }
         }
 

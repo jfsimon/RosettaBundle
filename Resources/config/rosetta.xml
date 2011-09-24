@@ -17,6 +17,10 @@
         <parameter key="be_simple_rosetta.importer.class">BeSimple\RosettaBundle\Rosetta\Collector\Importer</parameter>
         <parameter key="be_simple_rosetta.scanner.class">BeSimple\RosettaBundle\Rosetta\Collector\Scanner</parameter>
 
+        <parameter key="be_simple_rosetta.task.translate.class">BeSimple\RosettaBundle\Rosetta\Task\TranslateTask</parameter>
+        <parameter key="be_simple_rosetta.task.select.class">BeSimple\RosettaBundle\Rosetta\Task\SelectTask</parameter>
+        <parameter key="be_simple_rosetta.task.dump.class">BeSimple\RosettaBundle\Rosetta\Task\DumpTask</parameter>
+
     </parameters>
     <services>
 
@@ -80,6 +84,29 @@
         <service id="be_simple_rosetta.scanner" class="%be_simple_rosetta.scanner.class%">
             <argument type="service" id="be_simple_rosetta.factory" />
             <argument type="service" id="be_simple_rosetta.locator" />
+        </service>
+
+        <!-- tasks -->
+
+        <service id="be_simple_rosetta.task.translate" class="%be_simple_rosetta.task.translate.class%">
+            <tag name="be_simple_rosetta.task" alias="translate" />
+            <argument type="service" id="event_dispatcher" />
+            <argument type="service" id="be_simple_rosetta.factory" />
+            <argument>%be_simple_rosetta.locales.source%</argument>
+            <argument>%be_simple_rosetta.locales.translations%</argument>
+            <argument>%be_simple_rosetta.task.translate.translator%</argument>
+        </service>
+
+        <service id="be_simple_rosetta.task.select" class="%be_simple_rosetta.task.select.class%">
+            <tag name="be_simple_rosetta.task" alias="select" />
+            <argument type="service" id="event_dispatcher" />
+            <argument>%be_simple_rosetta.task.select.min_rating%</argument>
+        </service>
+
+        <service id="be_simple_rosetta.task.dump" class="%be_simple_rosetta.task.dump.class%">
+            <tag name="be_simple_rosetta.task" alias="dump" />
+            <argument type="service" id="event_dispatcher" />
+            <argument type="service" id="be_simple_rosetta.dumper" />
         </service>
 
     </services>
