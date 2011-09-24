@@ -3,12 +3,12 @@
 namespace BeSimple\RosettaBundle\Tests\Model;
 
 use BeSimple\RosettaBundle\Tests\TestCase;
-use BeSimple\RosettaBundle\Entity\Helper;
+use BeSimple\RosettaBundle\Entity\Helper\Helper;
 
 /**
  * @author: Jean-François Simon <contact@jfsimon.fr>
  */
-class MessageHelperTest extends TestCase
+class HelperTest extends TestCase
 {
     /**
      * @dataProvider provideKeyTexts
