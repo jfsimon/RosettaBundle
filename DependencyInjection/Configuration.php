@@ -89,7 +89,7 @@ class Configuration implements ConfigurationInterface
         $this->defaultDumper             = 'xliff';
         $this->defaultTranslator         = 'google';
         $this->availableImporterActions  = array('keep', 'backup', 'remove');
-        $this->defaultParametersGuessers = array('{*}', '{{*}}'); //, '%*%');
+        $this->defaultParametersGuessers = array('{{*}}'); //, '%*%');
         $this->defaultManageValue        = array('app', 'src');
         $this->defaultBackupDirectory    = 'backups';
         $this->defaultBackupDateFormat   = 'YmdHis';
