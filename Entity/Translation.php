@@ -3,6 +3,7 @@
 namespace BeSimple\RosettaBundle\Entity;
 
 use BeSimple\RosettaBundle\Entity\Helper\HelperInterface;
+use BeSimple\RosettaBundle\Entity\Type\Locale;
 
 /**
  * @author: Jean-François Simon <contact@jfsimon.fr>
@@ -15,7 +16,7 @@ class Translation extends AbstractEntity
     protected $message;
 
     /**
-     * @var string
+     * @var Locale
      */
     protected $locale;
 
@@ -80,6 +81,7 @@ class Translation extends AbstractEntity
 
     /**
      * @param Message $message
+     *
      * @return Translation
      */
     public function setMessage($message)
@@ -98,10 +100,11 @@ class Translation extends AbstractEntity
     }
 
     /**
-     * @param string $locale
+     * @param Locale $locale
+     *
      * @return Translation
      */
-    public function setLocale($locale)
+    public function setLocale(Locale$locale)
     {
         $this->locale = $locale;
 
@@ -109,7 +112,7 @@ class Translation extends AbstractEntity
     }
 
     /**
-     * @return string
+     * @return Locale
      */
     public function getLocale()
     {
@@ -118,6 +121,7 @@ class Translation extends AbstractEntity
 
     /**
      * @param string $text
+     *
      * @return Translation
      */
     public function setText($text)
@@ -145,6 +149,7 @@ class Translation extends AbstractEntity
 
     /**
      * @param int $rating
+     *
      * @param string $text
      */
     public function setRating($rating)

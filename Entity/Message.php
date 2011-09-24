@@ -203,4 +203,17 @@ class Message extends AbstractEntity
     {
         return $this->translations;
     }
+
+    /**
+     * @param Translation $translation A Translation instance
+     *
+     * @return Message This instance
+     */
+    public function addTranslation(Translation $translation)
+    {
+        $translation->setMessage($this);
+        $this->translations->add($translation);
+
+        return $this;
+    }
 }

@@ -95,4 +95,17 @@ class Group extends AbstractEntity
     {
         return $this->messages;
     }
+
+    /**
+     * @param Message $translation A Message instance
+     *
+     * @return Group This instance
+     */
+    public function addMessage(Message $message)
+    {
+        $message->setGroup($this);
+        $this->messages->add($message);
+
+        return $this;
+    }
 }
