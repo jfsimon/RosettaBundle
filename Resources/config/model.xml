@@ -9,6 +9,8 @@
         <parameter key="be_simple_rosetta.model.message_manager.class">BeSimple\RosettaBundle\Entity\Manager\MessageManager</parameter>
         <parameter key="be_simple_rosetta.model.translation_manager.class">BeSimple\RosettaBundle\Entity\Manager\TranslationManager</parameter>
 
+        <parameter key="be_simple_rosetta.model.locale_type">BeSimple\RosettaBundle\Entity\Type\LocaleType</parameter>
+
     </parameters>
     <services>
 

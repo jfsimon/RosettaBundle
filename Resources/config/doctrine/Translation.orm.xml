@@ -6,7 +6,7 @@
     http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
     <entity name="BeSimple\RosettaBundle\Entity\Translation" table="be_simple_rosetta_translation">
 
-        <field name="locale"     column="locale"      type="string"  length="7"  />
+        <field name="locale"     column="locale"      type="locale"  length="7" />
         <field name="text"       column="text"        type="text"    />
         <field name="hash"       column="hash"        type="string"  length="127" />
         <field name="rating"     column="rating"      type="integer" />
