@@ -1,20 +1,18 @@
 <?php
 
-namespace BeSimple\RosettaBundle\Command\Test;
+namespace BeSimple\RosettaBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use BeSimple\RosettaBundle\Command\AbstractCommand;
+use BeSimple\RosettaBundle\Command\Formatter\CellFormatter;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use BeSimple\RosettaBundle\Command\TableFormatter\TableFormatter;
-use BeSimple\RosettaBundle\Command\TableFormatter\TableColumn;
-use BeSimple\RosettaBundle\Command\TableFormatter\TableRow;
 
 /**
  * @author: Jean-François Simon <contact@jfsimon.fr>
  */
-class TestTranslateCommand extends ContainerAwareCommand
+class TestTranslateCommand extends AbstractCommand
 {
     /**
      * @see Command
@@ -38,9 +36,17 @@ class TestTranslateCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->output($this->translate($input), $output);
+        $translations = $this->translate($input);
+        $feedback     = $this->format($translations);
+
+        $output->write($feedback);
     }
 
+    /**
+     * @param InputInterface $input
+     *
+     * @return array
+     */
     protected function translate(InputInterface $input)
     {
         $factory = $this
@@ -59,40 +65,50 @@ class TestTranslateCommand extends ContainerAwareCommand
             ? explode(',', $input->getOption('with'))
             : $factory->getTranslatorAliases();
 
-        $stack = array();
+        $translations = array();
 
         foreach ($with as $adapter) {
-            $stack[$adapter] = $factory
+            $translations[$adapter] = $factory
                 ->getTranslator($adapter)
                 ->translate($input->getArgument('string'), $from, $to)
             ;
         }
 
-        return $stack;
+        return $translations;
     }
 
     /**
      * @param array $stack
-     * @param OutputInterface $output
+     *
+     * @return string
      */
-    protected function output(array $stack, OutputInterface $output)
+    protected function format(array $translations)
     {
-        $formatter = TableFormatter::create($output)
-            ->addColumn(new TableColumn('locale', 'info'))
-            ->addColumn(new TableColumn('service', 'comment'))
-            ->addColumn(new TableColumn('translation', 'info'))
-        ;
+        $headers = array(
+            'Service'     => CellFormatter::ALIGN_RIGHT,
+            'Locale'      => CellFormatter::ALIGN_LEFT,
+            'Translation' => CellFormatter::ALIGN_LEFT,
+        );
 
-        foreach ($stack as $adapter => $translations) {
-            foreach ($translations->allLocales() as $locale) {
-                $formatter->addRow(new TableRow(array(
-                    'service'     => $adapter,
-                    'locale'      => $locale,
-                    'translation' => $translations->get($locale) ?: '<error>'.$translations->getError($locale).'</error>',
-                )));
+        $body = array();
+
+        foreach ($translations as $adapter => $at) {
+            foreach ($at->allLocales() as $locale) {
+                $translation = $translations->get($locale);
+
+                $body[] = array(
+                    '<fg=blue>'.$adapter.'</fg=blue>',
+                    '<fg=yellow>'.$locale.'</fg=yellow>',
+                    $translation
+                        ? '<fg=green>'.$translation.'</fg=green>'
+                        : '<fg=red>'.$translations->getError($locale).'</fg=red>',
+                );
             }
         }
 
-        $formatter->write();
+        return $this
+            ->getFormatterHelper()
+            ->formatTable($headers, $body)
+        ;
     }
 }

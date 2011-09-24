@@ -1,21 +1,19 @@
 <?php
 
-namespace BeSimple\RosettaBundle\Command\Test;
+namespace BeSimple\RosettaBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use BeSimple\RosettaBundle\Command\AbstractCommand;
+use BeSimple\RosettaBundle\Command\Formatter\CellFormatter;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
-use BeSimple\RosettaBundle\Command\TableFormatter\TableFormatter;
-use BeSimple\RosettaBundle\Command\TableFormatter\TableColumn;
-use BeSimple\RosettaBundle\Command\TableFormatter\TableRow;
 
 /**
  * @author: Jean-François Simon <contact@jfsimon.fr>
  */
-class TestScanCommand extends ContainerAwareCommand
+class TestScanCommand extends AbstractCommand
 {
     /**
      * @see Command
@@ -37,9 +35,15 @@ class TestScanCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->output($this->scan($input), $output);
+        $messages = $this->scan($input);
+        $feedback = $this->format($messages);
+
+        $output->write($feedback);
     }
 
+    /**
+     * @param InputInterface $input
+     */
     protected function scan(InputInterface $input)
     {
         $file = $input->getArgument('file');
@@ -59,33 +63,39 @@ class TestScanCommand extends ContainerAwareCommand
     }
 
     /**
-     * @param array $translations
-     * @param OutputInterface $output
+     * @param array $messages
+     *
+     * @return string
      */
-    protected function output(array $translations, OutputInterface $output)
+    protected function format(array $messages)
     {
-        $output->getFormatter()->setStyle('parameter', new OutputFormatterStyle('red', null, array('bold')));
+        $headers = array(
+            'Domain'     => CellFormatter::ALIGN_RIGHT,
+            'Text'       => CellFormatter::ALIGN_LEFT,
+            'Parameters' => CellFormatter::ALIGN_LEFT,
+        );
 
-        $formatter = TableFormatter::create($output)
-            ->addColumn(new TableColumn('domain', 'comment'))
-            ->addColumn(new TableColumn('text', 'info'))
-            ->addColumn(new TableColumn('parameters', 'comment'))
-        ;
+        $body = array();
 
-        foreach ($translations as $message) {
-            $row = new TableRow(array(
-                'domain'     => $message['domain'] ?: '--',
-                'text'       => $message['text'],
-                'parameters' => $message['parameters'] ? '['.implode(', ', $message['parameters']).']' : '--',
-            ));
+        foreach ($messages as $message) {
+            $text = $message['parameters']
+                ? $this
+                    ->getFormatterHelper()
+                    ->formatHighlight($message['text'], $message['parameters'] ?: array(), 'fg=red')
+                : $message['text'];
 
-            foreach ($message['parameters'] ?: array() as $parameter) {
-                $row->highlight($parameter, 'parameter', array('text'));
-            }
-
-            $formatter->addRow($row);
+            $body[] = array(
+                '<fg=blue>'.($message['domain'] ?: '--').'</fg=blue>',
+                '<fg=green>'.$text.'</fg=green>',
+                $message['parameters']
+                    ? '<fg=yellow><fg=blue>[</fg=blue>'.implode('<fg=blue>,</fg=blue> ', $message['parameters']).'<fg=blue>]</fg=blue></fg=yellow>'
+                    : '<fg=red>none</fg=red>',
+            );
         }
 
-        $formatter->write();
+        return $this
+            ->getFormatterHelper()
+            ->formatTable($headers, $body)
+        ;
     }
 }
